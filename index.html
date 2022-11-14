@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
 
     <link rel="stylesheet" href="./assets/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/pomodoro.css">
 </head>
 
 <body style="background-color: rgb(13, 22, 51);">
@@ -58,12 +59,57 @@
                 </div>
 
             </div>
+
+            <!-- Pomodoro -->
+               
+                <div class="container">
+                    
+
+                    <p id="work" class="label">Trabajo  </p>
+                    <p id="break" class="label">Descanso</p>
+                    <p id="cycles" class="label">Ciclos</p>
+                    <!--Work Timer-->
+                    <div id="work-timer" class="timer">
+                        <p id="w_minutes">25</p>
+                        <p class="semicolon">:</p>
+                        <p id="w_seconds">00</p>
+                    </div>
+
+                    <!--Cycle Counter-->
+                    <p id="counter" class="timer">0</p>
+
+                    <!--Break Timer-->
+                    <div id="break-timer" class="timer">
+                        <p id="b_minutes">05</p>
+                        <p class="semicolon">:</p>
+                        <p id="b_seconds">00</p>
+                    </div>
+                   
+                    <button id="start" class="btn"><i class="fa-solid fa-play"></i></button>
+                    <button id="stop" class="btn"><i class="fa-solid fa-circle-pause"></i></button>
+                    <button id="reset" class="btn"><i class="fa-solid fa-rotate-right"></i></button>
+                </div>
+
+
+
+
         </div>
+
+
     </div>
+
+
+
+
+
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src='./assets/js/api_calls.js'></script>
     <script src='./assets/js/dragdropswap.js'></script>
     <script src='./assets/js/all.min.js'></script>
+    <script src='./assets/js/pomodoro.js'></script>
 </body>
 
 </html>
