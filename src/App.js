@@ -1,25 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
+import { makeStyles } from '@material-ui/core';
+import KanbanList from './components/KanbanList';
+import backgrounImage from './images/background.jpg';
+import AddCardOrList from './components/AddCardOrList';
 
 function App() {
+  const classes = useStyle();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={classes.root}>
+      <div className={classes.container}>
+        <KanbanList />
+        <KanbanList />
+        <KanbanList />
+        <KanbanList />
+        <div>
+          <AddCardOrList type="list" />
+        </div>
+      </div>
     </div>
   );
 }
+
+const useStyle = makeStyles(theme => ({
+  root: {
+    minHeight: '100vh',
+    overflowY: 'auto',
+    backgroundColor: '#EBECF0',
+    backgroundImage: `url(${backgrounImage})`,
+    backgroundPosition: 'center',
+    backgrounSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+  },
+  container: {
+    display: 'flex',
+  }
+}))
 
 export default App;
