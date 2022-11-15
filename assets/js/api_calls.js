@@ -37,7 +37,7 @@ function showUpdatedDate(card){
 // document.querySelectorAll(".card").addEventListener('change', changeCardTittle);
 
 
-function createCardElement(id, text, updatedAt) {
+function createCardElement(id, text, position, updatedAt) {
     let card = document.createElement('textarea');
 	card.className = 'card ';
 	card.value = text;
@@ -86,6 +86,7 @@ function createCardElement(id, text, updatedAt) {
     div.appendChild(updatedDate);
     div.appendChild(div_icon);
 	div.id = id;
+    div.setAttribute('data-position', position);
     return div
 	
 
@@ -163,7 +164,7 @@ async function createCard(text) {
 	let response = await createCardAPICall(title);
 
 	if(response !== undefined){
-		let card = createCardElement(response.result._id, response.result._title, response.result._updatedAt);
+		let card = createCardElement(response.result._id, response.result._title, response.result._position, response.result._updatedAt);
         startCard.appendChild(card);
         document.getElementsByName('title')[0].value = '';
         Swal.fire({
@@ -188,6 +189,7 @@ async function changeCardTittle(e){
 
     // set timer of 3 secs to execute the function
     const id = e.target.parentElement.id;
+    const position = e.target.parentElement.getAttribute('data-position');
     const title = e.target.value;
     const column = e.target.parentElement.parentElement.id.split('-')[1];
 
@@ -197,7 +199,7 @@ async function changeCardTittle(e){
     }    
     
     // Make api call to create card in database
-    let response = await changeCardAPICall(id, title, column);
+    let response = await changeCardAPICall(id, title, column, position);
 
     if(response === undefined){
         // Fire sweet alert
@@ -219,7 +221,7 @@ async function fillCards(columnId){
     const columnInput = document.getElementById(`list-${columnId}`)
     const cards = await result.json()
     cards.result.map((value, index) => {
-        const card = createCardElement(value._id, value._title, value._updatedAt)
+        const card = createCardElement(value._id, value._title, value._position, value._updatedAt)
         columnInput.appendChild(card)
         showUpdatedDate(card)
     })
@@ -270,7 +272,7 @@ async function deliteCardAPICall (id) {
     }
 };
 
-const changeCardAPICall = async (id, title, column) => {
+const changeCardAPICall = async (id, title, column, position) => {
     if(id === undefined || id === "" || title === undefined || title === ""){
         Swal.fire({
             icon: 'error',
@@ -291,6 +293,7 @@ const changeCardAPICall = async (id, title, column) => {
             description: description,
             column: column,
             deadline_date: undefined,
+            position: position
         })
     });
 
@@ -304,12 +307,13 @@ const changeCardAPICall = async (id, title, column) => {
 };
 
 // TODO: move function to other file
-async function putCard(cardId, columnId){
+async function putCard(cardId, columnId, position) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
-        "column": `${columnId}`
+        "column": `${columnId}`,
+        "position": `${position}`
     })
 
     const requestOptions = {
@@ -320,6 +324,7 @@ async function putCard(cardId, columnId){
     
 	const result = await fetch(`${BASE_URL}/cards/${cardId}`, requestOptions)
 	const response = await result.json()
+    console.log(response.result)
 }
 
 
