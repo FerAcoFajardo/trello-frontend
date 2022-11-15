@@ -7,6 +7,7 @@ let ws = document.getElementById('w_seconds');
 
 let bm = document.getElementById('b_minutes');
 let bs = document.getElementById('b_seconds');
+const estado = document.getElementById('estado');
 
 
 function disableStart(){
@@ -17,6 +18,7 @@ function disableStart(){
 function enableStart(){
     start.disabled = false;
     start.classList.remove('disabled');
+    estado.innerHTML = "Estado: Pausado";
 }
 
 function disableStop(){
@@ -27,6 +29,7 @@ function disableStop(){
 function enableStop(){
     stop.disabled = false;
     stop.classList.remove('disabled');
+    estado.innerHTML = "Estado: En progreso";
 }
 
 
