@@ -61,6 +61,24 @@ stop.addEventListener('click', function(){
 let audio = new Audio('./assets/sounds/alarm.mp3');
 let played = false;
 
+
+function playAlarm(){
+    // Play the music just if is not currently playing
+    if(audio.paused && !played){
+        audio.play();
+        played = true;
+        // Stop music in 5 seconds
+        setTimeout(function() {
+            audio.pause();
+        }, 10000);
+    }
+}
+
+function stopAlarm(){
+    audio.pause();
+    audio.currentTime = 0;
+}
+
 //Start Timer Function
 function timer(){
     disableStart();
@@ -77,15 +95,7 @@ function timer(){
     if(wm.innerText == 0 && ws.innerText == 0){
         if(bs.innerText != 0){
             bs.innerText--;
-            // Play the music just if is not currently playing
-            if(audio.paused && !played){
-                audio.play();
-                played = true;
-                // Stop music in 5 seconds
-                setTimeout(function() {
-                    audio.pause();
-                }, 10000);
-            }
+            playAlarm()
         } else if(bm.innerText != 0 && bs.innerText == 0){
             bs.innerText = 59;
             bm.innerText--;
@@ -95,21 +105,23 @@ function timer(){
 
     //Increment Counter by one if one full cycle is completed
     if(wm.innerText == 0 && ws.innerText == 0 && bm.innerText == 0 && bs.innerText == 0){
+        played = false;
+        playAlarm()
         wm.innerText = 25;
         ws.innerText = "00";
 
         bm.innerText = 5;
         bs.innerText = "00";
-        played = false;
 
         document.getElementById('counter').innerText++;
-        
+        played = false;
 
     }
 }
 
 //Stop Timer Function
 function stopInterval(){
+    stopAlarm();
     enableStartButton();
     disableStop()
     clearInterval(startTimer);
