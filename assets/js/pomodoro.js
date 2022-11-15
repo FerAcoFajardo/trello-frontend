@@ -45,15 +45,30 @@ start.addEventListener('click', function(){
 });
 
 reset.addEventListener('click', function(){
-    wm.innerText = 25;
-    ws.innerText = "00";
 
-    bm.innerText = 5;
-    bs.innerText = "00";
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, reiniciar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                wm.innerText = 25;
+                ws.innerText = "00";
 
-    document.getElementById('counter').innerText = 0;
-    stopInterval()
-    startTimer = undefined;
+                bm.innerText = 5;
+                bs.innerText = "00";
+
+                document.getElementById('counter').innerText = 0;
+                stopInterval()
+                startTimer = undefined;
+            }
+        });
+
+    
 });
 
 stop.addEventListener('click', function(){
