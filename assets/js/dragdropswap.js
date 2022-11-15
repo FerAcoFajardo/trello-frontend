@@ -38,7 +38,7 @@ function dropIt(ev) {
 		} else {
 			if (targetEl.id !== sourceIdParentEl.parentElement.id && targetEl.id == 'list-3'){
 				Swal.fire({
-					title: 'Estas seguro que quieres terminar la tarea?',
+					title: '¿Estas seguro que quieres terminar la tarea?',
 					showDenyButton: true,
 					confirmButtonText: 'Terminar',
 					denyButtonText: `Cancelar`,
