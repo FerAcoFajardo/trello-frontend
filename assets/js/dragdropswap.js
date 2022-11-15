@@ -57,7 +57,7 @@ function dropIt(ev) {
 								icon: 'success',
 								title: 'Tarea terminada',
 								text: 'La tarea se terminó correctamente',
-							});
+							}).then(()=> location.reload());
 							enableStartButton();
 						});
 					}
