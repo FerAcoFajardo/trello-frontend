@@ -58,6 +58,8 @@ stop.addEventListener('click', function(){
     startTimer = undefined;
 });
 
+let audio = new Audio('./assets/sounds/alarm.mp3');
+let played = false;
 
 //Start Timer Function
 function timer(){
@@ -75,9 +77,19 @@ function timer(){
     if(wm.innerText == 0 && ws.innerText == 0){
         if(bs.innerText != 0){
             bs.innerText--;
+            // Play the music just if is not currently playing
+            if(audio.paused && !played){
+                audio.play();
+                played = true;
+                // Stop music in 5 seconds
+                setTimeout(function() {
+                    audio.pause();
+                }, 10000);
+            }
         } else if(bm.innerText != 0 && bs.innerText == 0){
             bs.innerText = 59;
             bm.innerText--;
+            
         }
     }
 
@@ -88,14 +100,17 @@ function timer(){
 
         bm.innerText = 5;
         bs.innerText = "00";
+        played = false;
 
         document.getElementById('counter').innerText++;
+        
+
     }
 }
 
 //Stop Timer Function
 function stopInterval(){
-    enableStart();
+    enableStartButton();
     disableStop()
     clearInterval(startTimer);
 }
