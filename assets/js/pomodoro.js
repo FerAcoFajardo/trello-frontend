@@ -8,7 +8,6 @@ let ws = document.getElementById('w_seconds');
 let bm = document.getElementById('b_minutes');
 let bs = document.getElementById('b_seconds');
 
-let started = false;
 
 function disableStart(){
     start.disabled = true;
@@ -99,4 +98,12 @@ function stopInterval(){
     enableStart();
     disableStop()
     clearInterval(startTimer);
+}
+
+function enableStartButton() {
+    if(document.getElementById('list-2').children.length-1 > 0){
+        enableStart();
+    }else{
+        disableStart();
+    }
 }

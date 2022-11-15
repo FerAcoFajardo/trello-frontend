@@ -53,8 +53,9 @@ function dropIt(ev) {
 								icon: 'success',
 								title: 'Tarea terminada',
 								text: 'La tarea se terminó correctamente',
-							})
-						})
+							});
+							enableStartButton();
+						});
 					}
 				})
 			} else {
@@ -68,9 +69,10 @@ function dropIt(ev) {
 						title: 'Tarea movida',
 						text: 'La tarea se movió exitosamente',
 					})
-				})
+				});
 			}
 		}
+		enableStartButton();
 
 	} else {
 		// Same list. Swap the text of the two cards

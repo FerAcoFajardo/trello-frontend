@@ -1,6 +1,5 @@
 const BASE_URL = 'http://127.0.0.1:3000';
 const startCard = document.getElementById('list-1');
-let cardNum = 6;
 const addCardBtn = document.getElementById('add_card');
 const trash = document.getElementById('trash_delite');
 
@@ -9,6 +8,10 @@ window.onload = async ()=> {
     await fillCards(1)
     await fillCards(2)
     await fillCards(3)
+
+
+    enableStartButton();
+
 }
 
 addCardBtn.addEventListener('click', async (e) => {
@@ -60,7 +63,6 @@ function createCardElement(id, text) {
 	div.setAttribute('ondragover', 'allowDrop(event)');
     div.appendChild(card);
     div.appendChild(div_icon);
-	// cardNum++;
 	div.id = id;
     return div
 	
