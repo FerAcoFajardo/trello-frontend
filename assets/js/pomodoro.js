@@ -1,15 +1,38 @@
-var start = document.getElementById('start');
-var stop = document.getElementById('stop');
-var reset = document.getElementById('reset');
+let start = document.getElementById('start');
+let stop = document.getElementById('stop');
+let reset = document.getElementById('reset');
 
-var wm = document.getElementById('w_minutes');
-var ws = document.getElementById('w_seconds');
+let wm = document.getElementById('w_minutes');
+let ws = document.getElementById('w_seconds');
 
-var bm = document.getElementById('b_minutes');
-var bs = document.getElementById('b_seconds');
+let bm = document.getElementById('b_minutes');
+let bs = document.getElementById('b_seconds');
+
+let started = false;
+
+function disableStart(){
+    start.disabled = true;
+    start.classList.add('disabled');
+}
+
+function enableStart(){
+    start.disabled = false;
+    start.classList.remove('disabled');
+}
+
+function disableStop(){
+    stop.disabled = true;
+    stop.classList.add('disabled');
+}
+
+function enableStop(){
+    stop.disabled = false;
+    stop.classList.remove('disabled');
+}
+
 
 //store a reference to a timer variable
-var startTimer;
+let startTimer;
 
 start.addEventListener('click', function(){
     if(startTimer === undefined){
@@ -17,7 +40,7 @@ start.addEventListener('click', function(){
     } else {
         alert("Timer is already running");
     }
-})
+});
 
 reset.addEventListener('click', function(){
     wm.innerText = 25;
@@ -29,16 +52,18 @@ reset.addEventListener('click', function(){
     document.getElementById('counter').innerText = 0;
     stopInterval()
     startTimer = undefined;
-})
+});
 
 stop.addEventListener('click', function(){
     stopInterval()
     startTimer = undefined;
-})
+});
 
 
 //Start Timer Function
 function timer(){
+    disableStart();
+    enableStop();
     //Work Timer Countdown
     if(ws.innerText != 0){
         ws.innerText--;
@@ -71,5 +96,7 @@ function timer(){
 
 //Stop Timer Function
 function stopInterval(){
+    enableStart();
+    disableStop()
     clearInterval(startTimer);
 }
