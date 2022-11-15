@@ -21,24 +21,45 @@ addCardBtn.addEventListener('click', async (e) => {
 
 const deleteCardEvent = async (e) => {
 	//await deliteCardAPICall();
-    console.log(e.target)
     let targetEl = document.getElementById(e.target.id)
-    console.log(targetEl.id)
 };
+
+function showUpdatedDate(card){
+    // if parent parent id is list-3 then show
+    console.log(card.parentElement.id)
+    if (card.parentElement.id === 'list-3'){
+        let updatedDate = card.getElementsByClassName('updated-date')[0];
+        updatedDate.style.display = 'block';
+    }
+    
+}
 
 // document.querySelectorAll(".card").addEventListener('change', changeCardTittle);
 
 
-function createCardElement(id, text) {
+function createCardElement(id, text, updatedAt) {
     let card = document.createElement('textarea');
 	card.className = 'card ';
-	// card.setAttribute('draggable', 'true');
-	// card.setAttribute('ondragstart', 'dragStart(event)');
-	// card.setAttribute('ondrop', 'dropIt(event)');
-	// card.setAttribute('ondragover', 'allowDrop(event)');
 	card.value = text;
     card.setAttribute('data-ogtitle', text);
     card.addEventListener('change', changeCardTittle)
+
+    // Add updated date but hide
+    let updatedDate = document.createElement('p');
+    updatedDate.className = 'updated-date';
+    // Format date with dd/mm/yyyy HH:MM
+    let date = new Date(updatedAt);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let formattedDate = `${day}/${month}/${year} ${hours}:${minutes}`;
+    updatedDate.innerHTML = formattedDate;
+
+    updatedDate.style.display = 'none';
+    // card.appendChild(updatedDate);
+
 
     let icon=document.createElement('i');
     icon.classList.add('fa-solid');
@@ -62,6 +83,7 @@ function createCardElement(id, text) {
 	div.setAttribute('ondrop', 'dropIt(event)');
 	div.setAttribute('ondragover', 'allowDrop(event)');
     div.appendChild(card);
+    div.appendChild(updatedDate);
     div.appendChild(div_icon);
 	div.id = id;
     return div
@@ -141,7 +163,7 @@ async function createCard(text) {
 	let response = await createCardAPICall(title);
 
 	if(response !== undefined){
-		let card = createCardElement(response.result._id, response.result._title);
+		let card = createCardElement(response.result._id, response.result._title, response.result._updatedAt);
         startCard.appendChild(card);
         document.getElementsByName('title')[0].value = '';
         Swal.fire({
@@ -197,8 +219,9 @@ async function fillCards(columnId){
     const columnInput = document.getElementById(`list-${columnId}`)
     const cards = await result.json()
     cards.result.map((value, index) => {
-        const card = createCardElement(value._id, value._title)
+        const card = createCardElement(value._id, value._title, value._updatedAt)
         columnInput.appendChild(card)
+        showUpdatedDate(card)
     })
 }
 
@@ -297,4 +320,12 @@ async function putCard(cardId, columnId){
     
 	const result = await fetch(`${BASE_URL}/cards/${cardId}`, requestOptions)
 	const response = await result.json()
+}
+
+
+async function getCardById(id){
+    const result = await fetch(`${BASE_URL}/cards/${id}`)
+    let card = await result.json()
+    card = createCardElement(response.result._id, response.result._title, response.result._updatedAt);
+    return card;
 }
