@@ -18,7 +18,7 @@ function dropIt(ev) {
 	let targetEl = document.getElementById(ev.target.id);
 	let targetParentEl = targetEl.parentElement;
 
-	let card = sourceIdEl.parentElement;
+	let card = sourceIdEl;
 
 	// Compare List names to see if we are going between lists
 	// or within the same list
