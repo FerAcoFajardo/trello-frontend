@@ -152,6 +152,40 @@ function isValidCard(title){
     return true
 }
 
+function isValidCardEdit(card){
+    if (card.value.length > 100){
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'El titulo no puede tener mas de 100 caracteres',
+        })
+        return false
+    }
+
+    if(card.value === ''){
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'El titulo no puede estar vacio',
+        })
+        return false
+    }
+
+    const titles = document.getElementsByClassName('card');
+    for (let i = 0; i < titles.length; i++){
+        if (titles[i].value === card.value && titles[i].id !== card.id){
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'El titulo ya existe',
+            })
+            return false
+        }
+    }
+
+    return true
+}
+
 async function createCard(text) {
     // Al crear una tarjeta se asigna a la columna 1 por defecto
     const title = document.getElementsByName('title')[0].value;
@@ -193,7 +227,7 @@ async function changeCardTittle(e){
     const title = e.target.value;
     const column = e.target.parentElement.parentElement.id.split('-')[1];
 
-    if(!isValidCard(title)){
+    if(!isValidCardEdit(e.target)){
         e.target.value = e.target.dataset.ogtitle;
         return;
     }    
