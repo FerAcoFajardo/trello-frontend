@@ -14,7 +14,7 @@ function AddCardOrListText({type, setOpen}) {
                     value={text} 
                     onChange={e => setText(e.target.value) } 
                     onBlur={() => { setOpen(false) }}
-                    placeholder={type == 'card' ? 'Enter a title for this card...' : 'Enter list title...'}
+                    placeholder={type === 'card' ? 'Enter a title for this card...' : 'Enter list title...'}
                     inputProps={{className: classes.input}}
                 />
             </Paper>
@@ -22,7 +22,7 @@ function AddCardOrListText({type, setOpen}) {
             <div className={classes.confirm}>
                 <div>
                     <Button className={classes.confirmButton}>
-                        {type == 'card' ? 'Add Card' : 'Add List'}
+                        {type === 'card' ? 'Add Card' : 'Add List'}
                     </Button>
                     <IconButton onClick={() => setOpen(false)}>
                         <Clear />
@@ -39,9 +39,9 @@ function AddCardOrListText({type, setOpen}) {
 
 const useStyle = makeStyles(theme => ({
     card: {
-        width: '280px',
-        margin: theme.spacing(0,1,1,1),
-        paddingBottom: theme.spacing(4),
+        width: 'auto',
+        margin: theme.spacing(1),
+        padding: theme.spacing(1)
     },
     input: {
         margin: theme.spacing(1),
@@ -55,14 +55,15 @@ const useStyle = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        margin: theme.spacing(0,1,1,1),
+        margin: theme.spacing(0,1,1,1)
     },
     confirmButton: {
         background: '#5aac44',
         color: '#fff',
         '&:hover': {
             background: fade('#5aac44', 0.75),
-        }
+        },
+        margin: theme.spacing(1,0,0,0)
     }
 }))
 

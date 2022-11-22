@@ -4,7 +4,7 @@ import AddCardOrListText from './AddCardOrListText';
 
 function AddCardOrList({type}) {
     const classes = useStyle();
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
   return (
     <div className={classes.root}>
         <Collapse in={open}>
@@ -14,7 +14,7 @@ function AddCardOrList({type}) {
         <Collapse in={!open}>
             <Paper className={classes.AddCardOrListText} onClick={()=> setOpen(true)}>
                 <Typography>
-                    { type == 'card' ? 'Add a card' : 'Add another list' }
+                    { type === 'card' ? '+ Add a card' : '+ Add another list' }
                 </Typography>
             </Paper>
         </Collapse>
@@ -34,7 +34,9 @@ const useStyle = makeStyles(theme => ({
         background: '#EBECF0',
         '&:hover': {
             backgroundColor: fade('#000', 0.25),
-        }
+        },
+        // backgroundColor: 'transparent',
+        boxShadow: 'none'
     }
 }))
 
