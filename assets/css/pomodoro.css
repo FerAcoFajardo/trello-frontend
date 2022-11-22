@@ -93,3 +93,12 @@ p {
     font-weight: bold;
     text-align: center;
 }
+
+#pause_alarm{
+    grid-area: 4 / 4 / 4 / 4;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    height: 90%;
+    margin-bottom: 5px;
+}

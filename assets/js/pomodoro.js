@@ -9,6 +9,10 @@ let bm = document.getElementById('b_minutes');
 let bs = document.getElementById('b_seconds');
 const estado = document.getElementById('estado');
 
+const botonAlarma = document.getElementById("pause_alarm");
+
+botonAlarma.addEventListener('click', stopAlarm);
+
 
 function disableStart(){
     start.disabled = true;
@@ -56,11 +60,11 @@ reset.addEventListener('click', function(){
         confirmButtonText: 'Si, reiniciar!'
         }).then((result) => {
             if (result.isConfirmed) {
-                wm.innerText = 25;
-                ws.innerText = "00";
+                wm.innerText = 00;
+                ws.innerText = "25";
 
-                bm.innerText = 5;
-                bs.innerText = "00";
+                bm.innerText = 00;
+                bs.innerText = "25";
 
                 document.getElementById('counter').innerText = 0;
                 stopInterval()
@@ -85,10 +89,10 @@ function playAlarm(){
     if(audio.paused && !played){
         audio.play();
         played = true;
-        // Stop music in 5 seconds
-        setTimeout(function() {
-            audio.pause();
-        }, 10000);
+        // // Stop music in 5 seconds
+        // setTimeout(function() {
+        //     audio.pause();
+        // }, 10000);
     }
 }
 
@@ -96,6 +100,8 @@ function stopAlarm(){
     audio.pause();
     audio.currentTime = 0;
 }
+
+
 
 //Start Timer Function
 function timer(){
@@ -123,15 +129,26 @@ function timer(){
 
     //Increment Counter by one if one full cycle is completed
     if(wm.innerText == 0 && ws.innerText == 0 && bm.innerText == 0 && bs.innerText == 0){
+        let counter = document.getElementById('counter');
         played = false;
-        playAlarm()
-        wm.innerText = 25;
-        ws.innerText = "00";
+        playAlarm();
+        if(counter.innerText == 0){
+            wm.innerText = 00;
+            ws.innerText = "25";
 
-        bm.innerText = 5;
-        bs.innerText = "00";
+            bm.innerText = 20;
+            bs.innerText = "00";
+        }else{
+            wm.innerText = 00;
+            ws.innerText = "25";
+    
+            bm.innerText = 0;
+            bs.innerText = "25";
 
-        document.getElementById('counter').innerText++;
+        }
+        
+
+        document.getElementById('counter').innerText--;
         played = false;
 
     }
