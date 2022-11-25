@@ -166,10 +166,10 @@ function timer(){
         }
         
 
+        counter.innerText--;
         if(counter.innerText == 0){
             counter.innerText = 5;
         }
-        counter.innerText--;
         played = false;
 
     }
