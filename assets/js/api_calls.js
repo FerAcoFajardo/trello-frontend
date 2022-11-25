@@ -3,11 +3,27 @@ const startCard = document.getElementById('list-1');
 const addCardBtn = document.getElementById('add_card');
 const trash = document.getElementById('trash_delite');
 
+async function cleanColum(id){
+    const columnInput = document.getElementById(`list-${id}`)
+    const tittleElement = columnInput.getElementsByClassName("list-title")[0].cloneNode(true);
+    columnInput.innerHTML = '';
+    columnInput.appendChild(tittleElement);
+}
+
+async function loadCardsColumns(){
+
+    // Clean columns
+    await cleanColum(1);
+    await cleanColum(2);
+    await cleanColum(3);
+
+    await fillCards(1);
+    await fillCards(2);
+    await fillCards(3);
+}
 
 window.onload = async ()=> {
-    await fillCards(1)
-    await fillCards(2)
-    await fillCards(3)
+    await loadCardsColumns()
 
 
     enableStartButton();
@@ -20,13 +36,12 @@ addCardBtn.addEventListener('click', async (e) => {
 });
 
 const deleteCardEvent = async (e) => {
-	//await deliteCardAPICall();
+	//await deleteCardAPICall();
     let targetEl = document.getElementById(e.target.id)
 };
 
 function showUpdatedDate(card){
     // if parent parent id is list-3 then show
-    console.log(card.parentElement.id)
     if (card.parentElement.id === 'list-3'){
         let updatedDate = card.getElementsByClassName('updated-date')[0];
         updatedDate.style.display = 'block';
@@ -273,21 +288,19 @@ async function onClickTrash(id){
 
     if (result.isConfirmed){
         console.log('eliminando...')
-        deliteCardAPICall(id);
+        deleteCardAPICall(id);
     }
 }
 
 
 
 // CHECAR ESTA MADRE, LO HIZO LA MAVELY CON EL PAUL Y PUEDE TENER ERRORES (pa ti fajardo)
-async function deliteCardAPICall (id) {
+async function deleteCardAPICall (id) {
      
     let response = await fetch(`${BASE_URL}/cards/${id}`, {
         method: 'DELETE',
         
     });
-
-    let result = await response.json();
 
     if (response.status == 200) {
         await Swal.fire({
@@ -295,7 +308,7 @@ async function deliteCardAPICall (id) {
 			title: 'Éxito!',
 			text: 'La tarea se eliminó correctamente',
 		})
-        window.location.reload();
+        loadCardsColumns();
     }else{
         await Swal.fire({
 			icon: 'error',
@@ -358,7 +371,6 @@ async function putCard(cardId, columnId, position) {
     
 	const result = await fetch(`${BASE_URL}/cards/${cardId}`, requestOptions)
 	const response = await result.json()
-    console.log(response.result)
 }
 
 

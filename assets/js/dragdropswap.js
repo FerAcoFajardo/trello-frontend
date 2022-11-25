@@ -47,7 +47,6 @@ function dropIt(ev) {
 					denyButtonText: `Cancelar`,
 				}).then((result) => {
 					if (result.isConfirmed){
-						console.log(targetEl.id,sourceIdParentEl.parentElement.id)
 						// Append to the list
 						targetEl.appendChild(card);
 						const columnId = targetEl.id.split('-')[1]
@@ -57,13 +56,12 @@ function dropIt(ev) {
 								icon: 'success',
 								title: 'Tarea terminada',
 								text: 'La tarea se terminó correctamente',
-							}).then(()=> location.reload());
+							}).then(()=> loadCardsColumns());
 							enableStartButton();
 						});
 					}
 				})
 			} else {
-				console.log(targetEl.id,sourceIdParentEl.parentElement.id)
 				// Append to the list
 				targetEl.appendChild(card);
 				const columnId = targetEl.id.split('-')[1]
@@ -73,7 +71,7 @@ function dropIt(ev) {
 						icon: 'success',
 						title: 'Tarea movida',
 						text: 'La tarea se movió exitosamente',
-					}).then(()=> location.reload())
+					}).then(()=> loadCardsColumns())
 				});
 			}
 		}
@@ -100,12 +98,10 @@ function dropIt(ev) {
 
 function getPosition(node, source){
 	const cards = node.querySelectorAll('.backgorund-input');
-	console.log(source)
 	let position = 0;
 	const sourcePosition = source.getAttribute('data-position');
 	for (let i = 0; i < cards.length; i++) {
 		let cardPosition = cards[i].getAttribute('data-position');
-		console.log(cardPosition, sourcePosition)
 		if (sourcePosition == cardPosition) {
 			position = i + 1;
 			break;

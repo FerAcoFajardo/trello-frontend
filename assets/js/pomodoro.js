@@ -8,15 +8,23 @@ let ws = document.getElementById('w_seconds');
 let bm = document.getElementById('b_minutes');
 let bs = document.getElementById('b_seconds');
 const estado = document.getElementById('estado');
+const counter = document.getElementById('counter');
 
 const botonAlarma = document.getElementById("pause_alarm");
-
+const botonSkipBreak = document.getElementById('skip_break');
 botonAlarma.addEventListener('click', stopAlarm);
+
+const minutosPomodoro = "00";
+const segundosPomodoro = "25";
+
+const minutosDescanso = "00";
+const segundosDescanso = "25";
 
 
 function disableStart(){
     start.disabled = true;
     start.classList.add('disabled');
+    estado.innerHTML = "";
 }
 
 function enableStart(){
@@ -48,6 +56,8 @@ start.addEventListener('click', function(){
     }
 });
 
+botonSkipBreak.addEventListener('click', skipBreak);
+
 reset.addEventListener('click', function(){
 
     Swal.fire({
@@ -60,13 +70,13 @@ reset.addEventListener('click', function(){
         confirmButtonText: 'Si, reiniciar!'
         }).then((result) => {
             if (result.isConfirmed) {
-                wm.innerText = 00;
-                ws.innerText = "25";
+                wm.innerText = minutosPomodoro;
+                ws.innerText = segundosPomodoro;
 
-                bm.innerText = 00;
-                bs.innerText = "25";
+                bm.innerText = minutosDescanso;
+                bs.innerText = segundosDescanso;
 
-                document.getElementById('counter').innerText = 0;
+                document.getElementById('counter').innerText = 4;
                 stopInterval()
                 startTimer = undefined;
             }
@@ -89,10 +99,6 @@ function playAlarm(){
     if(audio.paused && !played){
         audio.play();
         played = true;
-        // // Stop music in 5 seconds
-        // setTimeout(function() {
-        //     audio.pause();
-        // }, 10000);
     }
 }
 
@@ -101,7 +107,16 @@ function stopAlarm(){
     audio.currentTime = 0;
 }
 
+function skipBreak(){
+    if(wm.innerText !== 0 || ws.innerText !== 0){
+        wm.innerText = minutosPomodoro;
+        ws.innerText = segundosPomodoro;
 
+        bm.innerText = minutosDescanso;
+        bs.innerText = segundosDescanso;
+        timer();
+    }
+}
 
 //Start Timer Function
 function timer(){
@@ -110,45 +125,51 @@ function timer(){
     //Work Timer Countdown
     if(ws.innerText != 0){
         ws.innerText--;
+        ws.innerText = ws.innerText.padStart(2, '0');
     } else if(wm.innerText != 0 && ws.innerText == 0){
-        ws.innerText = 59;
+        ws.innerText = segundosDescanso;
         wm.innerText--;
+        wm.innerText = wm.innerText.padStart(2, '0');
     }
 
     //Break Timer Countdown
     if(wm.innerText == 0 && ws.innerText == 0){
         if(bs.innerText != 0){
             bs.innerText--;
+            bs.innerText = bs.innerText.padStart(2, '0');
             playAlarm()
         } else if(bm.innerText != 0 && bs.innerText == 0){
-            bs.innerText = 59;
+            bs.innerText = segundosDescanso;
             bm.innerText--;
+            bm.innerText = bm.innerText.padStart(2, '0');
             
         }
     }
 
     //Increment Counter by one if one full cycle is completed
     if(wm.innerText == 0 && ws.innerText == 0 && bm.innerText == 0 && bs.innerText == 0){
-        let counter = document.getElementById('counter');
         played = false;
         playAlarm();
-        if(counter.innerText == 0){
-            wm.innerText = 00;
-            ws.innerText = "25";
+        if(counter.innerText == 1){
+            wm.innerText = minutosPomodoro;
+            ws.innerText = segundosDescanso;
 
             bm.innerText = 20;
             bs.innerText = "00";
         }else{
-            wm.innerText = 00;
-            ws.innerText = "25";
+            wm.innerText = minutosPomodoro;
+            ws.innerText = segundosDescanso;
     
-            bm.innerText = 0;
-            bs.innerText = "25";
+            bm.innerText = minutosDescanso;
+            bs.innerText = segundosDescanso;
 
         }
         
 
-        document.getElementById('counter').innerText--;
+        if(counter.innerText == 0){
+            counter.innerText = 5;
+        }
+        counter.innerText--;
         played = false;
 
     }
@@ -169,3 +190,5 @@ function enableStartButton() {
         disableStart();
     }
 }
+
+
