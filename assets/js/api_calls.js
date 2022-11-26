@@ -35,11 +35,6 @@ addCardBtn.addEventListener('click', async (e) => {
     
 });
 
-const deleteCardEvent = async (e) => {
-	//await deleteCardAPICall();
-    let targetEl = document.getElementById(e.target.id)
-};
-
 function showUpdatedDate(card){
     // if parent parent id is list-3 then show
     if (card.parentElement.id === 'list-3'){
@@ -86,7 +81,6 @@ function createCardElement(id, text, position, updatedAt) {
     div_icon.className= 'icon';
     div_icon.appendChild(icon);
     div_icon.id="trash-"+id;
-    //div_icon.addEventListener('click', deleteCardEvent);
     div_icon.setAttribute("onclick",`onClickTrash(${id})`);
     
 

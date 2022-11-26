@@ -152,7 +152,9 @@ function timer(){
 
 //Stop Timer Function
 function stopInterval(){
-    enableStartButton();
+    if(startPomodoro === true){
+        enableStartButton();
+    }
     disableStop()
     clearInterval(startTimer);
 }
