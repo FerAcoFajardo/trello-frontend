@@ -51,7 +51,7 @@ p {
 }
 
 #counter {
-    grid-area: 2 / 3 / 2 / 3;
+    grid-area: 1 / 1 / 1 / 1;
     color: red;
 }
 
@@ -110,4 +110,23 @@ p {
     text-align: center;
     height: 90%;
     margin-bottom: 10px;
+}
+
+#comment-counter{
+    grid-area: 2 / 1 / 2 / 1;
+    font-size:7px;
+}
+#counter-descansos{
+    grid-area: 1 / 2 / 1 / 2;
+    color: red;
+}
+#commer-descansos{
+    grid-area: 2 / 2 / 2 / 2;
+    font-size:7px;
+}
+
+.counter-container{
+    grid-area: 2 / 3 / 2 / 3;
+    display: grid;
+    text-align: center;
 }
