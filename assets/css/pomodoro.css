@@ -95,12 +95,13 @@ p {
 }
 
 #pause_alarm{
-    grid-area: 4 / 4 / 4 / 4;
+    grid-area: 5 / 4 / 5 / 5;
     font-size: 15px;
     font-weight: bold;
     text-align: center;
     height: 90%;
     margin-bottom: 5px;
+    margin-right: 5px;
 }
 
 #skip_break{
