@@ -1,11 +1,12 @@
 import { makeStyles, Paper } from '@material-ui/core';
 import React from 'react'
 
-function KanbanCard() {
+function KanbanCard({card}) {
     const classes = useStyle();
+    const {id, title} = card;
     return (
         <Paper className={classes.kanbanCard}>
-            Card
+            {title}
         </Paper>
     )
 }

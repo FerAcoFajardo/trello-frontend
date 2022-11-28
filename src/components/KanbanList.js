@@ -1,17 +1,22 @@
 import {Paper, CssBaseline, makeStyles} from '@material-ui/core';
+import { LocalConvenienceStoreOutlined } from '@material-ui/icons';
 import AddCardOrList from './AddCardOrList';
 import KanbanCard from './KanbanCard';
 import ListTitle from './ListTitle';
 
-const KanbanList = () => {
+const KanbanList = ({list}) => {
     const classes = useStyle();
+    const {id, title, cards} = list;
     return (
         <Paper className={classes.root}>
             <CssBaseline />
-            <ListTitle />
-            <KanbanCard />
-            <KanbanCard />
-            <KanbanCard />
+            <ListTitle title={title} key={id}/>
+
+            {
+                cards.map((card) => {
+                    return <KanbanCard card={card} key={card.id} />
+                })
+            }
 
             <AddCardOrList type="card" />
         </Paper>
