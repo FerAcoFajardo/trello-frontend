@@ -6,25 +6,44 @@ import AddCardOrList from './components/AddCardOrList';
 import {useState} from 'react';
 
 import mockData from './mockdata.js';
+import ContextAPI from './utils/contextAPI.js';
+
+
+
 
 function App() {
   const classes = useStyle();
   const [data, setData] = useState(mockData);
+
+  const updateColumnTitle = (newTitle, listId) => {
+    const list = data.lists[listId];
+    list.title = newTitle;
+    const newState = {
+      ...data,
+    lists:{
+      ...data.lists,
+      [listId]: list
+    }};
+    setData(newState);
+  
+  }
   
   return (
-    <div className={classes.root}>
-      <div className={classes.container}>
-        {
-          data.listIds.map((listId) => {
-            const list = data.lists[listId];
-            return <KanbanList list={list} key={listId} />
-          })
-        }
-        <div>
-          <AddCardOrList type="list" />
+    <ContextAPI.Provider value={{updateColumnTitle: updateColumnTitle}}>
+      <div className={classes.root}>
+        <div className={classes.container}>
+          {
+            data.listIds.map((listId) => {
+              const list = data.lists[listId];
+              return <KanbanList list={list} key={listId} />
+            })
+          }
+          <div>
+            <AddCardOrList type="list" />
+          </div>
         </div>
       </div>
-    </div>
+    </ContextAPI.Provider>
   );
 }
 

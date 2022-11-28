@@ -7,10 +7,11 @@ import ListTitle from './ListTitle';
 const KanbanList = ({list}) => {
     const classes = useStyle();
     const {id, title, cards} = list;
+    console.log(id);
     return (
         <Paper className={classes.root}>
             <CssBaseline />
-            <ListTitle title={title} key={id}/>
+            <ListTitle title={title} listId={id} key={id}/>
 
             {
                 cards.map((card) => {
