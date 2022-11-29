@@ -11,8 +11,8 @@ const segundosPomodoro = "10";
 const minutosDescanso = "00";
 const segundosDescanso = "10";
 
-const minutosDescansoLargo = "20";
-const segundosDescansoLargo = "00";
+const minutosDescansoLargo = "00";
+const segundosDescansoLargo = "30";
 
 const audio = new Audio('./assets/sounds/alarm.mp3');
 let played = false;
