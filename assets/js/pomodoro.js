@@ -61,7 +61,7 @@ function enableStop(){
 }
 
 function stopPomodoro(){
-    if(!detenido){
+    if(!played){
         console.log('miau')
         startPomodoro = false;
         stopTimer();
@@ -143,7 +143,7 @@ function timer(){
         ws.innerText--;
         ws.innerText = ws.innerText.padStart(2, '0');
     } else if(wm.innerText != 0 && ws.innerText == 0){
-        ws.innerText = segundosDescanso;
+        ws.innerText = 59;
         wm.innerText--;
         wm.innerText = wm.innerText.padStart(2, '0');
     }else{
@@ -165,7 +165,7 @@ function timer(){
             bs.innerText--;
             bs.innerText = bs.innerText.padStart(2, '0');
         } else if(bm.innerText != 0 && bs.innerText == 0 && startPomodoro === true){
-            bs.innerText = segundosDescansoLargo;
+            bs.innerText = 59;
             bm.innerText--;
             bm.innerText = bm.innerText.padStart(2, '0');
         }
@@ -177,7 +177,7 @@ function timer(){
     }
     if(wm.innerText == 0 && ws.innerText == 0 && bm.innerText == 0 && bs.innerText == 0){
         played = false;
-        if(counter.innerText == 0){
+        if(counter.innerText == 1){
             wm.innerText = minutosPomodoro;
             ws.innerText = segundosDescanso;
             
