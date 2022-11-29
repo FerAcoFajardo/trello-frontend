@@ -6,10 +6,10 @@ const botonAlarma = document.getElementById("pause_alarm");
 const botonSkipBreak = document.getElementById('skip_break');
 
 const minutosPomodoro = "00";
-const segundosPomodoro = "25";
+const segundosPomodoro = "10";
 
 const minutosDescanso = "00";
-const segundosDescanso = "25";
+const segundosDescanso = "10";
 
 const minutosDescansoLargo = "20";
 const segundosDescansoLargo = "00";
@@ -31,6 +31,10 @@ let bs = document.getElementById('b_seconds');
 let startTimer;
 
 let startPomodoro = true;
+
+let descansoLargo = false;
+let detenido = false;
+let primerPomodoro = true;
 
 
 function disableStart(){
@@ -56,13 +60,20 @@ function enableStop(){
     estado.innerHTML = "Estado: En progreso";
 }
 
+function stopPomodoro(){
+    if(!detenido){
+        console.log('miau')
+        startPomodoro = false;
+        stopTimer();
+        detenido = true;
+    }
+}
+
 function playAlarm(){
     // Play the music just if is not currently playing
     if(audio.paused && !played){
-        startPomodoro = false;
         audio.play();
         played = true;
-        stopTimer();
     }
 }
 
@@ -70,23 +81,56 @@ function playAlarm(){
 function stopAlarm(){
     audio.pause();
     audio.currentTime = 0;
+    played=false;
+}
+
+function stopAlarmButton(){
+    stopAlarm();
     startPomodoro = true;
-    startPomodoroTimer();
-    
+    detenido=false;
+    startPomodoroTimer('stop');
+    toggleSkipButton()
 }
 
 
-function skipBreak(){
-    if(wm.innerText !== 0 || ws.innerText !== 0){
+
+
+async function skipBreak(){
+    const result = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: "No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, saltar descanso!'
+    })
+
+    if (result.isConfirmed) {
         wm.innerText = minutosPomodoro;
         ws.innerText = segundosPomodoro;
         
         bm.innerText = minutosDescanso;
         bs.innerText = segundosDescanso;
-        counter.innerText--;
-        counterDescansos.innerText++;
-        startPomodoroTimer();
+        counter.innerText = 4;
+        counterDescansos.innerText = 0;
+        descansoLargo = false;
+        startPomodoroTimer('skip');
+        stopAlarm();
     }
+
+    
+}
+
+function toggleSkipButton(){
+
+    botonSkipBreak.disabled = (counter.innerText !== '0');
+
+    // if((wm.innerText !== 0 || ws.innerText !== 0) && descansoLargo === true){
+    //     botonSkipBreak.disabled = false;
+    // } else {
+    //     botonSkipBreak.disabled = true;
+    // }
 }
 
 
@@ -102,11 +146,21 @@ function timer(){
         ws.innerText = segundosDescanso;
         wm.innerText--;
         wm.innerText = wm.innerText.padStart(2, '0');
+    }else{
+        if(primerPomodoro){
+            stopPomodoro();
+        }
+        primerPomodoro = false;
     }
     
     //Break Timer Countdown
-    if(wm.innerText == 0 && ws.innerText == 0 && startPomodoro === true){
+    if(ws.innerText == 5 || bs.innerText == 5){
         playAlarm();
+    }
+    if(wm.innerText == 0 && ws.innerText == 0 && startPomodoro === true){
+        if(bm.innerText == 0 && bs.innerText == 0 && startPomodoro === true){
+            stopPomodoro();
+        }
         if(bs.innerText != 0 && startPomodoro === true){
             bs.innerText--;
             bs.innerText = bs.innerText.padStart(2, '0');
@@ -114,19 +168,22 @@ function timer(){
             bs.innerText = segundosDescansoLargo;
             bm.innerText--;
             bm.innerText = bm.innerText.padStart(2, '0');
-            
         }
     }
     
     //Increment Counter by one if one full cycle is completed
+    if(ws.innerText == 5 || bs.innerText == 5){
+        playAlarm();
+    }
     if(wm.innerText == 0 && ws.innerText == 0 && bm.innerText == 0 && bs.innerText == 0){
         played = false;
-        if(counter.innerText == 1){
+        if(counter.innerText == 0){
             wm.innerText = minutosPomodoro;
             ws.innerText = segundosDescanso;
             
             bm.innerText = minutosDescansoLargo;
             bs.innerText = segundosDescansoLargo;
+            descansoLargo = true;
         }else{
             wm.innerText = minutosPomodoro;
             ws.innerText = segundosDescanso;
@@ -136,16 +193,15 @@ function timer(){
             
         }
         
-        playAlarm();
+        stopPomodoro();
         
         counter.innerText--;
         counterDescansos.innerText++;
         if(counter.innerText == 0){
-            counter.innerText = 5;
+            counter.innerText = 4;
             counterDescansos.innerText = 0;
         }
         played = false;
-        
     }
 }
 
@@ -175,16 +231,16 @@ function stopTimer(){
 }
 
 
-function startPomodoroTimer(){
+function startPomodoroTimer(mode='Start'){
     if(startTimer === undefined){
         startTimer = setInterval(timer, 1000)
-    } else {
+    } else if(mode === 'Start') {
         alert("Timer is already running");
     }
 }
 
 
-botonAlarma.addEventListener('click', stopAlarm);
+botonAlarma.addEventListener('click', stopAlarmButton);
 
 
 start.addEventListener('click',startPomodoroTimer);
@@ -213,8 +269,10 @@ reset.addEventListener('click', function(){
             
             counter.innerText = 4;
             counterDescansos.innerText = 0;
+            primerPomodoro = true;
             stopInterval()
             startTimer = undefined;
+            stopAlarm();
         }
     });
 

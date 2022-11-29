@@ -47,7 +47,7 @@ function showUpdatedDate(card){
 // document.querySelectorAll(".card").addEventListener('change', changeCardTittle);
 
 
-function createCardElement(id, text, position, updatedAt) {
+function createCardElement(id, text, position, updatedAt, columnId) {
     let card = document.createElement('textarea');
 	card.className = 'card ';
 	card.value = text;
@@ -71,18 +71,21 @@ function createCardElement(id, text, position, updatedAt) {
     // card.appendChild(updatedDate);
 
 
-    let icon=document.createElement('i');
-    icon.classList.add('fa-solid');
-    icon.classList.add('fa-trash-can');
-    icon.classList.add('color');
+    
+    let icon;
+    let div_icon;
+    if (columnId != 3){
+        icon = document.createElement('i');
+        icon.classList.add('fa-solid');
+        icon.classList.add('fa-trash-can');
+        icon.classList.add('color');
 
-    
-    let div_icon = document.createElement('a');
-    div_icon.className= 'icon';
-    div_icon.appendChild(icon);
-    div_icon.id="trash-"+id;
-    div_icon.setAttribute("onclick",`onClickTrash(${id})`);
-    
+        div_icon = document.createElement('a');
+        div_icon.className= 'icon';
+        div_icon.appendChild(icon);
+        div_icon.id="trash-"+id;
+        div_icon.setAttribute("onclick",`onClickTrash(${id})`);
+    }
 
 
     let div = document.createElement('div');
@@ -93,7 +96,9 @@ function createCardElement(id, text, position, updatedAt) {
 	div.setAttribute('ondragover', 'allowDrop(event)');
     div.appendChild(card);
     div.appendChild(updatedDate);
-    div.appendChild(div_icon);
+    if (columnId != 3){
+        div.appendChild(div_icon);
+    }
 	div.id = id;
     div.setAttribute('data-position', position);
     return div
@@ -207,7 +212,7 @@ async function createCard(text) {
 	let response = await createCardAPICall(title);
 
 	if(response !== undefined){
-		let card = createCardElement(response.result._id, response.result._title, response.result._position, response.result._updatedAt);
+		let card = createCardElement(response.result._id, response.result._title, response.result._position, response.result._updatedAt, 1);
         startCard.appendChild(card);
         document.getElementsByName('title')[0].value = '';
         Swal.fire({
@@ -264,7 +269,7 @@ async function fillCards(columnId){
     const columnInput = document.getElementById(`list-${columnId}`)
     const cards = await result.json()
     cards.result.map((value, index) => {
-        const card = createCardElement(value._id, value._title, value._position, value._updatedAt)
+        const card = createCardElement(value._id, value._title, value._position, value._updatedAt, columnId)
         columnInput.appendChild(card)
         showUpdatedDate(card)
     })
