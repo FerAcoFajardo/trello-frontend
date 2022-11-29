@@ -11,8 +11,8 @@ const segundosPomodoro = "10";
 const minutosDescanso = "00";
 const segundosDescanso = "10";
 
-const minutosDescansoLargo = "20";
-const segundosDescansoLargo = "00";
+const minutosDescansoLargo = "00";
+const segundosDescansoLargo = "30";
 
 const audio = new Audio('./assets/sounds/alarm.mp3');
 let played = false;
@@ -72,16 +72,25 @@ function stopPomodoro(){
 function playAlarm(){
     // Play the music just if is not currently playing
     if(audio.paused && !played){
+        startPomodoro = false;
         audio.play();
         played = true;
+        stopTimer();
     }
+    toggleStopAlarmButton();
 }
 
+function toggleStopAlarmButton(){
+    botonAlarma.disabled = !played;
+}
 
 function stopAlarm(){
     audio.pause();
     audio.currentTime = 0;
-    played=false;
+    startPomodoro = true;
+    startPomodoroTimer();
+    toggleSkipButton();
+    
 }
 
 function stopAlarmButton(){
@@ -124,7 +133,7 @@ async function skipBreak(){
 
 function toggleSkipButton(){
 
-    botonSkipBreak.disabled = (counter.innerText !== '0');
+    botonSkipBreak.disabled = !descansoLargo;
 
     // if((wm.innerText !== 0 || ws.innerText !== 0) && descansoLargo === true){
     //     botonSkipBreak.disabled = false;
@@ -146,21 +155,11 @@ function timer(){
         ws.innerText = 59;
         wm.innerText--;
         wm.innerText = wm.innerText.padStart(2, '0');
-    }else{
-        if(primerPomodoro){
-            stopPomodoro();
-        }
-        primerPomodoro = false;
     }
     
     //Break Timer Countdown
-    if(ws.innerText == 5 || bs.innerText == 5){
-        playAlarm();
-    }
     if(wm.innerText == 0 && ws.innerText == 0 && startPomodoro === true){
-        if(bm.innerText == 0 && bs.innerText == 0 && startPomodoro === true){
-            stopPomodoro();
-        }
+        playAlarm();
         if(bs.innerText != 0 && startPomodoro === true){
             bs.innerText--;
             bs.innerText = bs.innerText.padStart(2, '0');
@@ -172,9 +171,6 @@ function timer(){
     }
     
     //Increment Counter by one if one full cycle is completed
-    if(ws.innerText == 5 || bs.innerText == 5){
-        playAlarm();
-    }
     if(wm.innerText == 0 && ws.innerText == 0 && bm.innerText == 0 && bs.innerText == 0){
         played = false;
         if(counter.innerText == 1){
@@ -193,7 +189,7 @@ function timer(){
             
         }
         
-        stopPomodoro();
+        playAlarm();
         
         counter.innerText--;
         counterDescansos.innerText++;
@@ -240,8 +236,7 @@ function startPomodoroTimer(mode='Start'){
 }
 
 
-botonAlarma.addEventListener('click', stopAlarmButton);
-
+botonAlarma.addEventListener('click', stopAlarm);
 
 start.addEventListener('click',startPomodoroTimer);
 
