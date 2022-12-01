@@ -27,9 +27,17 @@ function App() {
     setData(newState);
   
   }
+
+  const addCard = (text, listId) => {
+    
+  }
+
+  const addList = (text) => {
+
+  }    
   
   return (
-    <ContextAPI.Provider value={{updateColumnTitle: updateColumnTitle}}>
+    <ContextAPI.Provider value={{updateColumnTitle, addCard, addList}}>
       <div className={classes.root}>
         <div className={classes.container}>
           {
