@@ -5,7 +5,7 @@ function KanbanCard({card}) {
     const classes = useStyle();
     const {id, title} = card;
     return (
-        <Paper className={classes.kanbanCard}>
+        <Paper className={classes.kanbanCard} id={id}>
             {title}
         </Paper>
     )

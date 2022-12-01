@@ -1,5 +1,5 @@
 import {Paper, CssBaseline, makeStyles} from '@material-ui/core';
-import { LocalConvenienceStoreOutlined } from '@material-ui/icons';
+// import { LocalConvenienceStoreOutlined } from '@material-ui/icons';
 import AddCardOrList from './AddCardOrList';
 import KanbanCard from './KanbanCard';
 import ListTitle from './ListTitle';
