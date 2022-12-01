@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core';
 import KanbanList from './components/KanbanList';
 import backgrounImage from './images/background.jpg';
 import AddCardOrList from './components/AddCardOrList';
+import Navbar from './components/Navbar';
 import {useState} from 'react';
 
 import mockData from './mockdata.js';
@@ -43,6 +44,7 @@ function App() {
           {
             data.listIds.map((listId) => {
               const list = data.lists[listId];
+              
               return <KanbanList list={list} key={listId} />
             })
           }
