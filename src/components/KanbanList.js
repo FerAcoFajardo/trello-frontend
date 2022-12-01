@@ -19,7 +19,7 @@ const KanbanList = ({list}) => {
                 })
             }
 
-            <AddCardOrList type="card" />
+            <AddCardOrList type="card" listId={list.id}/>
         </Paper>
     )
 }

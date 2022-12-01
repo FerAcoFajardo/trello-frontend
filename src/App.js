@@ -5,9 +5,10 @@ import backgrounImage from './images/background.jpg';
 import AddCardOrList from './components/AddCardOrList';
 import Navbar from './components/Navbar';
 import {useState} from 'react';
-
+import uuid from "react-uuid";
 import mockData from './mockdata.js';
 import ContextAPI from './utils/contextAPI.js';
+
 
 
 
@@ -15,6 +16,7 @@ import ContextAPI from './utils/contextAPI.js';
 function App() {
   const classes = useStyle();
   const [data, setData] = useState(mockData);
+
 
   const updateColumnTitle = (newTitle, listId) => {
     const list = data.lists[listId];
@@ -30,10 +32,41 @@ function App() {
   }
 
   const addCard = (text, listId) => {
-    
+    const newCardId = uuid();
+    const newCard = {
+      id: newCardId,
+      title:text
+    }
+
+    const list = data.lists[listId];
+    const cards = [...list.cards, newCard];
+    list.cards = cards
+    const newState = {
+      ...data,
+      lists: {
+        ...data.lists,
+        [listId]: list
+      }
+    }
+    setData(newState);
+
   }
 
   const addList = (text) => {
+    const newListId = uuid();
+    const newList = {
+      id: newListId,
+      title:text,
+      cards:[]
+    }
+    const newState = {
+      listIds: [...data.listIds, newListId],
+      lists: {
+        ...data.lists,
+        [newListId]: newList
+      }
+    }
+    setData(newState);
 
   }    
   

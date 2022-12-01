@@ -1,11 +1,22 @@
 import { Button, Paper, makeStyles, fade, IconButton } from '@material-ui/core'
 import { InputBase } from '@mui/material'
-import { useState } from 'react'
-import { Clear, MoreHoriz } from '@material-ui/icons'
+import { useContext, useState } from 'react'
+import { Clear, MoreHoriz} from '@material-ui/icons'
+import contextAPI from '../utils/contextAPI.js';
 
-function AddCardOrListText({type, setOpen}) {
+function AddCardOrListText({type, setOpen, listId}) {
     const [text, setText] = useState('');
     const classes = useStyle();
+    const {addCard, addList} = useContext(contextAPI);
+    const handleAddCardOrList = () => {
+        if(type === "card"){
+            addCard(text, listId);
+        }else{
+            addList(text);
+        }
+        setText("");
+        setOpen(false);
+    }            
     return (
         <>
             <Paper className={classes.card}>
@@ -21,7 +32,9 @@ function AddCardOrListText({type, setOpen}) {
 
             <div className={classes.confirm}>
                 <div>
-                    <Button className={classes.confirmButton}>
+                    <Button className={classes.confirmButton}
+                        onClick={handleAddCardOrList}
+                    >
                         {type === 'card' ? 'Add Card' : 'Add List'}
                     </Button>
                     <IconButton onClick={() => setOpen(false)}>
