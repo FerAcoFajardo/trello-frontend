@@ -64,7 +64,7 @@ function Board() {
     }
     
     return (
-        <Base title={workspaceData.title}>
+        <Base title={`${data.workspaces[workspaceId-1].title} > ${workspaceData.title}`}>
             <ContextAPI.Provider value={{updateColumnTitle, addCard, addList}}>
                 <div>
                     <div className={classes.container}>

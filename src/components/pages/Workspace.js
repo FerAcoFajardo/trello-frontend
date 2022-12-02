@@ -15,7 +15,7 @@ function Boards() {
   const boardsData = mockData.workspaces[id-1]?.boards;
   if (!boardsData) return <NotFound />;
   
-  const title = `Tableros del workspace: ${mockData.workspaces[id-1].title}`;
+  const title = `${mockData.workspaces[id-1].title} > Tableros`;
   return (
     <Base title={title}>
         <Container sx={{ py: 8 }}>
