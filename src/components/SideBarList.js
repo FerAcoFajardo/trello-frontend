@@ -31,7 +31,9 @@ export const mainListItems = (
       <ListItemIcon>
         <LogoutIcon />
       </ListItemIcon>
-      <ListItemText primary="Logout" />
+      <Link to="/signIn" underline="none">
+        <ListItemText primary="Logout" />
+      </Link>
     </ListItemButton>
   </React.Fragment>
 );
