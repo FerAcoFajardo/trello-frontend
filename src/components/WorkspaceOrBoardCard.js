@@ -7,6 +7,9 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 
 function WorkspaceCard(props) {
+  const url = (props.entity === "Workspace") 
+                ? `/workspaces/${props.workspaceId}/boards`
+                : `/workspaces/${props.workspaceId}/boards/${props.cardId}`;
   return (
     <Card
         sx={{ maxWidth: 345, display: 'flex', flexDirection: 'column' }}
@@ -23,7 +26,8 @@ function WorkspaceCard(props) {
         </Typography>
         </CardContent>
         <CardActions>
-        <Button size="small">View</Button>
+        
+        <Button size="small" href={url}>View</Button>
         <Button size="small">Edit</Button>
         <Button size="small">Remove</Button>
         </CardActions>

@@ -1,10 +1,8 @@
-import { makeStyles } from '@material-ui/core';
-import {useState} from 'react';
 import mockData from '../../mockdata.js';
 import Base from '../Base';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import WorkspaceCard from '../WorkspaceCard';
+import WorkspaceCard from '../WorkspaceOrBoardCard';
 
 const cards = mockData.workspaces;
 
@@ -17,7 +15,7 @@ function Workspace() {
           <Grid container spacing={4}>
             {cards.map((card) => (
               <Grid item key={card.id} xs={12} sm={6} md={4}>
-                <WorkspaceCard image={card.image} title={card.title} />
+                <WorkspaceCard entity={"Workspace"} workspaceId={card.id} image={card.image} title={card.title} />
               </Grid>
             ))}
           </Grid>

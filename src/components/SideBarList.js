@@ -11,12 +11,13 @@ import { Link } from "react-router-dom";
 
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton>
+    {/* <ListItemButton>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Home" />
-    </ListItemButton>
+    </ListItemButton> */}
+    
     <ListItemButton>
       <ListItemIcon>
         <DeskIcon />
@@ -25,6 +26,7 @@ export const mainListItems = (
         <ListItemText primary="Workspaces" />
       </Link>
     </ListItemButton>
+    
     <ListItemButton>
       <ListItemIcon>
         <LogoutIcon />
