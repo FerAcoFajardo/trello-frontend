@@ -28,6 +28,16 @@ import {useState} from 'react';
 import uuid from "react-uuid";
 import mockData from '../../mockdata.js';
 import { makeStyles } from '@material-ui/core';
+import ListSubheader from '@mui/material/ListSubheader';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import LogoutIcon from '@mui/icons-material/Logout'
+;import PeopleIcon from '@mui/icons-material/People';
+import DeskIcon from '@mui/icons-material/Desk';
+import LayersIcon from '@mui/icons-material/Layers';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 
 function Copyright(props) {
   return (
@@ -204,7 +214,26 @@ function DashboardContent() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+            <ListItemButton>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <Link to="/">
+                <ListItemText primary="Home" />
+              </Link>
+            </ListItemButton>
+            <ListItemButton>
+              <ListItemIcon>
+                <DeskIcon />
+              </ListItemIcon>
+              <ListItemText primary="Workspaces" />
+            </ListItemButton>
+            <ListItemButton>
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItemButton>
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>
