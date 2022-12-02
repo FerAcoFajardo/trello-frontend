@@ -1,19 +1,9 @@
-import './App.css';
-
-import Navbar from './components/Navbar';
-import Dashboard from './components/dashboard/Dashboard.js';
-
-
-
+import Board from './components/pages/Board';
 
 function App() {
   
-
-
-      
-  
   return (
-    <Dashboard />
+    <Board />
   );
 }
 

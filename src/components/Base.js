@@ -12,22 +12,11 @@ import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './Chart';
-import Deposits from './Deposits';
-import Orders from './Orders';
-import KanbanList from '../KanbanList';
-import AddCardOrList from '../AddCardOrList';
-import ContextAPI from '../../utils/contextAPI.js';
-import {useState} from 'react';
-import uuid from "react-uuid";
-import mockData from '../../mockdata.js';
-import { makeStyles } from '@material-ui/core';
+import { mainListItems, secondaryListItems } from './SideBar.js';
 
 function Copyright(props) {
   return (
@@ -90,66 +79,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
-  const classes = useStyle();
-  const [data, setData] = useState(mockData);
+function DashboardContent({ children }) {
 
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-  const updateColumnTitle = (newTitle, listId) => {
-    const list = data.lists[listId];
-    list.title = newTitle;
-    const newState = {
-      ...data,
-    lists:{
-      ...data.lists,
-      [listId]: list
-    }};
-    setData(newState);
-  
-  }
-
-  const addCard = (text, listId) => {
-    const newCardId = uuid();
-    const newCard = {
-      id: newCardId,
-      title:text
-    }
-
-    const list = data.lists[listId];
-    const cards = [...list.cards, newCard];
-    list.cards = cards
-    const newState = {
-      ...data,
-      lists: {
-        ...data.lists,
-        [listId]: list
-      }
-    }
-    setData(newState);
-
-  }
-
-  const addList = (text) => {
-    const newListId = uuid();
-    const newList = {
-      id: newListId,
-      title:text,
-      cards:[]
-    }
-    const newState = {
-      listIds: [...data.listIds, newListId],
-      lists: {
-        ...data.lists,
-        [newListId]: newList
-      }
-    }
-    setData(newState);
-
-  }
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -224,22 +159,9 @@ function DashboardContent() {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              <ContextAPI.Provider value={{updateColumnTitle, addCard, addList}}>
-                <div className={classes.root}>
-                  <div className={classes.container}>
-                    {
-                      data.listIds.map((listId) => {
-                        const list = data.lists[listId];
-                        
-                        return <KanbanList list={list} key={listId} />
-                      })
-                    }
-                    <div>
-                      <AddCardOrList type="list" />
-                    </div>
-                  </div>
-                </div>
-              </ContextAPI.Provider>
+              
+                { children }
+
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>
@@ -249,21 +171,4 @@ function DashboardContent() {
   );
 }
 
-const useStyle = makeStyles(theme => ({
-  root: {
-    minHeight: '100vh',
-    overflowY: 'auto',
-    //backgroundColor: '#03153D',
-    //backgroundImage: `url(${backgrounImage})`,
-    //backgroundPosition: 'center',
-    //backgrounSize: 'cover',
-    //backgroundRepeat: 'no-repeat',
-  },
-  container: {
-    display: 'flex',
-  }
-}))
-
-export default function Dashboard() {
-  return <DashboardContent />;
-}
+export default DashboardContent;
