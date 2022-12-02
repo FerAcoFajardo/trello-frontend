@@ -7,7 +7,7 @@ import mockData from '../../mockdata.js';
 import ContextAPI from '../../utils/contextAPI.js';
 import Base from '../Base';
 
-function App() {
+function Board() {
   const classes = useStyle();
   const [data, setData] = useState(mockData);
 
@@ -67,7 +67,7 @@ function App() {
   return (
     <Base>
         <ContextAPI.Provider value={{updateColumnTitle, addCard, addList}}>
-            <div className={classes.root}>
+            <div>
                 <div className={classes.container}>
                 {
                     data.listIds.map((listId) => {
@@ -87,14 +87,9 @@ function App() {
 }
 
 const useStyle = makeStyles(theme => ({
-  root: {
-    minHeight: '100vh',
-    overflowY: 'auto',
-    backgroundColor: '#EBECF0',
-  },
   container: {
     display: 'flex',
   }
 }))
 
-export default App;
+export default Board;
