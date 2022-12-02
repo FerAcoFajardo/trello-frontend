@@ -9,29 +9,29 @@ const mockData = {
     workspaces: [
         {
             id: 1,
-            title: 'Workspace 1',
+            title: 'Proyectos escolares',
             image: workSpaceImage1,
             boards: [
                 {
                     id: 1,
-                    title: 'Board 1',
+                    title: 'Temas emergentes de web',
                     image: workSpaceImage1,
                     lists: {
                         "01list":{
                             id: "01list",
-                            title: "To Do",
+                            title: "To Dos",
                             cards: [
                                 {
                                     id: "01card",
-                                    title: "Learn React",
+                                    title: "Aprender React",
                                 },
                                 {
                                     id: "02card",
-                                    title: "Learn Redux",
+                                    title: "Aprender Redux",
                                 },
                                 {
                                     id: "03card",
-                                    title: "Learn Firebase",
+                                    title: "Aprender React Router",
                                 }
                             ]
                         },
@@ -41,11 +41,11 @@ const mockData = {
                             cards: [
                                 {
                                     id: "04card",
-                                    title: "Learn React Native",
+                                    title: "Implementar componentes",
                                 },
                                 {
                                     id: "05card",
-                                    title: "Learn GraphQL",
+                                    title: "Integrar back y front",
                                 }
                             ]
                         },
@@ -58,24 +58,24 @@ const mockData = {
                 },
                 {
                     id: 2,
-                    title: 'Board 2',
+                    title: 'Métodologías ágiles',
                     image: workSpaceImage2,
                     lists: {
                         "01list":{
                             id: "01list",
-                            title: "To Do",
+                            title: "To Dos",
                             cards: [
                                 {
                                     id: "01card",
-                                    title: "Learn React",
+                                    title: "Implementar Pomodoro",
                                 },
                                 {
                                     id: "02card",
-                                    title: "Learn Redux",
+                                    title: "Implementar columnas",
                                 },
                                 {
                                     id: "03card",
-                                    title: "Learn Firebase",
+                                    title: "Implementar alarma",
                                 }
                             ]
                         },
@@ -85,41 +85,46 @@ const mockData = {
                             cards: [
                                 {
                                     id: "04card",
-                                    title: "Learn React Native",
+                                    title: "Modificar tareas",
                                 },
                                 {
                                     id: "05card",
-                                    title: "Learn GraphQL",
+                                    title: "Eliminar tareas",
                                 }
                             ]
                         },
                         "03list": {
                             id: "03list",
                             title: "Done",
-                            cards: []
+                            cards: [
+                                {
+                                    id: "06card",
+                                    title: "Implementar drag and drop",
+                                }
+                            ]
                         }
                     },
                 },
                 {
                     id: 3,
-                    title: 'Board 3',
+                    title: 'Inteligencia artificial',
                     image: workSpaceImage3,
                     lists: {
                         "01list":{
                             id: "01list",
-                            title: "To Do",
+                            title: "To Dos",
                             cards: [
                                 {
                                     id: "01card",
-                                    title: "Learn React",
+                                    title: "Aprender Python",
                                 },
                                 {
                                     id: "02card",
-                                    title: "Learn Redux",
+                                    title: "Obtener dataset",
                                 },
                                 {
                                     id: "03card",
-                                    title: "Learn Firebase",
+                                    title: "Implementar modelo",
                                 }
                             ]
                         },
@@ -129,12 +134,8 @@ const mockData = {
                             cards: [
                                 {
                                     id: "04card",
-                                    title: "Learn React Native",
+                                    title: "Correr entrenamiento",
                                 },
-                                {
-                                    id: "05card",
-                                    title: "Learn GraphQL",
-                                }
                             ]
                         },
                         "03list": {
@@ -148,29 +149,29 @@ const mockData = {
         }, 
         {
             id: 2,
-            title: 'Workspace 2',
+            title: 'Proyectos personales',
             image: workSpaceImage2,
             boards: [
                 {
                     id: 4,
-                    title: 'Board 4',
+                    title: 'Proyectos de Go',
                     image: workSpaceImage4,
                     lists: {
                         "01list":{
                             id: "01list",
-                            title: "To Do",
+                            title: "To Dos",
                             cards: [
                                 {
                                     id: "01card",
-                                    title: "Learn React",
+                                    title: "Aprender Go",
                                 },
                                 {
                                     id: "02card",
-                                    title: "Learn Redux",
+                                    title: "Aprender sintaxis de go",
                                 },
                                 {
                                     id: "03card",
-                                    title: "Learn Firebase",
+                                    title: "Integración de bd",
                                 }
                             ]
                         },
@@ -180,11 +181,11 @@ const mockData = {
                             cards: [
                                 {
                                     id: "04card",
-                                    title: "Learn React Native",
+                                    title: "Implementar arquitectura",
                                 },
                                 {
                                     id: "05card",
-                                    title: "Learn GraphQL",
+                                    title: "Implementar ORM",
                                 }
                             ]
                         },
@@ -197,24 +198,24 @@ const mockData = {
                 },
                 {
                     id: 5,
-                    title: 'Board 5',
+                    title: 'Proyectos de Java',
                     image: workSpaceImage5,
                     lists: {
                         "01list":{
                             id: "01list",
-                            title: "To Do",
+                            title: "To Dos",
                             cards: [
                                 {
                                     id: "01card",
-                                    title: "Learn React",
+                                    title: "Hacer arquitectura",
                                 },
                                 {
                                     id: "02card",
-                                    title: "Learn Redux",
+                                    title: "Aprender ORM",
                                 },
                                 {
                                     id: "03card",
-                                    title: "Learn Firebase",
+                                    title: "Implementar ORM",
                                 }
                             ]
                         },
@@ -224,11 +225,11 @@ const mockData = {
                             cards: [
                                 {
                                     id: "04card",
-                                    title: "Learn React Native",
+                                    title: "Instalar dependencias",
                                 },
                                 {
                                     id: "05card",
-                                    title: "Learn GraphQL",
+                                    title: "Usar Maven",
                                 }
                             ]
                         },
@@ -243,12 +244,12 @@ const mockData = {
         },
         {
             id: 3,
-            title: 'Workspace 3',
+            title: 'Trabajo',
             image: workSpaceImage3,
             boards: [
                 {
                     id: 6,
-                    title: 'Board 6',
+                    title: 'Python',
                     image: workSpaceImage6,
                     lists: {
                         "01list":{
@@ -257,15 +258,15 @@ const mockData = {
                             cards: [
                                 {
                                     id: "01card",
-                                    title: "Learn React",
+                                    title: "Aprender Python",
                                 },
                                 {
                                     id: "02card",
-                                    title: "Learn Redux",
+                                    title: "Crear proyecto",
                                 },
                                 {
                                     id: "03card",
-                                    title: "Learn Firebase",
+                                    title: "Implementar modelos",
                                 }
                             ]
                         },
@@ -275,11 +276,7 @@ const mockData = {
                             cards: [
                                 {
                                     id: "04card",
-                                    title: "Learn React Native",
-                                },
-                                {
-                                    id: "05card",
-                                    title: "Learn GraphQL",
+                                    title: "Sincronizar base de datos",
                                 }
                             ]
                         },
@@ -294,17 +291,17 @@ const mockData = {
         },
         {
             id: 4,
-            title: 'Workspace 4',
+            title: 'Compras',
             image: workSpaceImage4,
         },
         {
             id: 5,
-            title: 'Workspace 5',
+            title: 'Hogar',
             image: workSpaceImage5,
         },
         {
             id: 6,
-            title: 'Workspace 6',
+            title: 'Navidad',
             image: workSpaceImage6,
         }
     ]
