@@ -55,7 +55,7 @@ function TopNavigation(props) {
           noWrap
           sx={{ flexGrow: 1 }}
         >
-          Dashboard
+          {props.title}
         </Typography>
         <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">

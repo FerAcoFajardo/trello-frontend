@@ -7,6 +7,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import DeskIcon from '@mui/icons-material/Desk';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import { Link } from "react-router-dom";
 
 export const mainListItems = (
   <React.Fragment>
@@ -20,7 +21,9 @@ export const mainListItems = (
       <ListItemIcon>
         <DeskIcon />
       </ListItemIcon>
-      <ListItemText primary="Workspaces" />
+      <Link to="/workspaces" underline="none">
+        <ListItemText primary="Workspaces" />
+      </Link>
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>

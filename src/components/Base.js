@@ -12,7 +12,7 @@ import TopNavigation from './TopNavigation.js';
 
 const mdTheme = createTheme();
 
-function DashboardContent({ children }) {
+function DashboardContent({ children, title }) {
 
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
@@ -24,7 +24,7 @@ function DashboardContent({ children }) {
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         
-        <TopNavigation open={open} toggleDrawer={toggleDrawer} />
+        <TopNavigation open={open} toggleDrawer={toggleDrawer} title={title} />
         <SideBar open={open} toggleDrawer={toggleDrawer} />
         
         <Box

@@ -1,4 +1,5 @@
 import Board from './components/pages/Board';
+import Workspaces from './components/pages/Workspaces';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -8,10 +9,10 @@ function App() {
 
     <div className="app">
       <Router>
-        <Board />
+        
         <Routes>
-          <Route path="/" element={<div></div>}/>
-          <Route path="/workspaces" element={<div></div>}/>
+          <Route path="/" element={<Board />}/>
+          <Route path="/workspaces" element={<Workspaces />}/>
         </Routes>
       </Router>
     </div>
