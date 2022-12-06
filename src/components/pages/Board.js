@@ -65,12 +65,50 @@ function Board() {
     }
 
     const onDragEnd = (result) => {
-        const {destination, destination: {droppableId: destDroppableId, index: destIndex}, source, source: {droppableId: sourceDroppableId, index: sourceIndex}, draggableId, type} = result;    
+        const {destination, source, draggableId, type} = result;    
+        const destDroppableId = destination?.droppableId;
+        const destIndex = destination?.index;
+        const sourceDroppableId = source?.droppableId;
+        const sourceIndex = source?.index;
+
         console.table([{sourceDroppableId, destDroppableId, draggableId}]);
         console.table([{type, sourceIndex, destIndex}]);
         if (!destination) return;
         if (sourceDroppableId === destDroppableId && sourceIndex === destIndex) return;
         
+        if (type === 'list') {
+            const list = workspaceData.lists[draggableId];
+            console.log(result)
+            console.log(list, draggableId);
+            console.log(workspaceData.lists);
+            const lists = Object.values(workspaceData.lists);
+            lists.splice(sourceIndex, 1);
+            lists.splice(destIndex, 0, list);
+            const newData = {...data};
+            // lists to object
+            const listsObj = {};
+            lists.forEach(list => {
+                listsObj[list.id] = list;
+            })
+            newData.workspaces[workspaceId-1].boards[boardId-1].lists = listsObj;
+            setData(newData);
+            console.log(newData);
+            return;
+        }
+
+        const sourceList = workspaceData.lists[sourceDroppableId];
+        console.log(sourceList);
+        const destList = workspaceData.lists[destDroppableId];
+        const sourceCards = [...sourceList.cards];
+        const destCards = destList === sourceList ? sourceCards : [...destList.cards];
+        const [removed] = sourceCards.splice(sourceIndex, 1);
+        destCards.splice(destIndex, 0, removed);
+        sourceList.cards = sourceCards;
+        destList.cards = destCards;
+        const newData = {...data};
+        newData.workspaces[workspaceId-1].boards[boardId-1].lists[sourceDroppableId] = sourceList;
+        newData.workspaces[workspaceId-1].boards[boardId-1].lists[destDroppableId] = destList;
+        setData(newData);
     }
     
     return (
