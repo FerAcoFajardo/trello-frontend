@@ -1,4 +1,4 @@
-import { Button, Paper, makeStyles, fade, IconButton } from '@material-ui/core'
+import { Button, Paper, makeStyles, alpha, IconButton } from '@material-ui/core'
 import { InputBase } from '@mui/material'
 import { useContext, useState } from 'react'
 import { Clear, MoreHoriz} from '@material-ui/icons'
@@ -74,7 +74,7 @@ const useStyle = makeStyles(theme => ({
         background: '#5aac44',
         color: '#fff',
         '&:hover': {
-            background: fade('#5aac44', 0.75),
+            background: alpha('#5aac44', 0.75),
         },
         margin: theme.spacing(1,0,0,0)
     }

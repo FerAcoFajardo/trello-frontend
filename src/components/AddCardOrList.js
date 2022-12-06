@@ -1,4 +1,4 @@
-import {Collapse, fade, makeStyles, Paper, Typography} from '@material-ui/core'
+import {Collapse, alpha, makeStyles, Paper, Typography} from '@material-ui/core'
 import { useState } from "react"
 import AddCardOrListText from './AddCardOrListText';
 
@@ -33,7 +33,7 @@ const useStyle = makeStyles(theme => ({
         margin: theme.spacing(1),
         background: '#EBECF0',
         '&:hover': {
-            backgroundColor: fade('#000', 0.25),
+            backgroundColor: alpha('#000', 0.25),
         },
         // backgroundColor: 'transparent',
         boxShadow: 'none'

@@ -1,13 +1,22 @@
 import { makeStyles, Paper } from '@material-ui/core';
 import React from 'react'
+import {Draggable} from 'react-beautiful-dnd';
 
-function KanbanCard({card}) {
+function KanbanCard({card, index}) {
     const classes = useStyle();
     const {id, title} = card;
     return (
-        <Paper className={classes.kanbanCard} id={id}>
-            {title}
-        </Paper>
+        <Draggable draggableId={id} index={index} key={id}>
+            {
+                (provided) => (
+                    <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                        <Paper className={classes.kanbanCard} id={id}>
+                            {title}
+                        </Paper>
+                    </div>
+                )
+            }
+        </Draggable>
     )
 }
 

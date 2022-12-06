@@ -1,26 +1,43 @@
 import {Paper, CssBaseline, makeStyles} from '@material-ui/core';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 // import { LocalConvenienceStoreOutlined } from '@material-ui/icons';
 import AddCardOrList from './AddCardOrList';
 import KanbanCard from './KanbanCard';
 import ListTitle from './ListTitle';
 
-const KanbanList = ({list}) => {
+const KanbanList = ({list, index}) => {
     const classes = useStyle();
     const {id, title, cards} = list;
-    console.log(id);
+    
     return (
-        <Paper className={classes.root}>
-            <CssBaseline />
-            <ListTitle title={title} listId={id} key={id}/>
-
+        <Draggable draggableId={id} key={id} index={index}>
             {
-                cards.map((card) => {
-                    return <KanbanCard card={card} key={card.id} />
-                })
-            }
+                (provided) => (
+                    <div {...provided.draggableProps} ref={provided.innerRef}>
+                        <Paper className={classes.root} {...provided.dragHandleProps}>
+                            <CssBaseline />
+                            <ListTitle title={title} listId={id} key={id}/>
 
-            <AddCardOrList type="card" listId={list.id}/>
-        </Paper>
+                            <Droppable droppableId={id}>
+                                {
+                                    (providedDrop) => (
+                                        <div ref={providedDrop.innerRef} {...providedDrop.droppableProps}>
+                                            {
+                                                cards.map((card, index) => {
+                                                    return <KanbanCard card={card} key={card.id} index={index} />
+                                                })
+                                            }
+                                            {providedDrop.placeholder}
+                                        </div>
+                                    )
+                                }
+                            </Droppable>
+                            <AddCardOrList type="card" listId={list.id}/>
+                        </Paper>
+                    </div>
+                )
+            }
+        </Draggable>
     )
 }
 

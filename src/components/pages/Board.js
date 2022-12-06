@@ -8,6 +8,7 @@ import ContextAPI from '../../utils/contextAPI.js';
 import Base from '../Base';
 import { useParams } from "react-router-dom";
 import NotFound from './NotFound';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 function Board() {
     
@@ -62,21 +63,39 @@ function Board() {
         setData(dataCopy);
 
     }
+
+    const onDragEnd = (result) => {
+        const {destination, destination: {droppableId: destDroppableId, index: destIndex}, source, source: {droppableId: sourceDroppableId, index: sourceIndex}, draggableId, type} = result;    
+        console.table([{sourceDroppableId, destDroppableId, draggableId}]);
+        console.table([{type, sourceIndex, destIndex}]);
+        if (!destination) return;
+        if (sourceDroppableId === destDroppableId && sourceIndex === destIndex) return;
+        
+    }
     
     return (
         <Base title={`${data.workspaces[workspaceId-1].title} > ${workspaceData.title}`}>
             <ContextAPI.Provider value={{updateColumnTitle, addCard, addList}}>
                 <div>
-                    <div className={classes.container}>
-                    {
-                        Object.keys(workspaceList).map((key) => {
-                            return <KanbanList list={workspaceList[key]} key={key} />
-                        })
-                    }
-                    <div>
-                        <AddCardOrList type="list" />
-                    </div>
-                    </div>
+                    <DragDropContext onDragEnd={ onDragEnd }>
+                        <Droppable droppableId="all-lists" direction="horizontal" type="list">
+                            {
+                                (provided) => (
+                                    <div className={classes.container} ref={provided.innerRef} {...provided.droppableProps}>
+                                        {
+                                            Object.keys(workspaceList).map((key, index) => {
+                                                return <KanbanList list={workspaceList[key]} index={index} key={key} />
+                                            })
+                                        }
+                                        <div>
+                                            <AddCardOrList type="list" />
+                                            {provided.placeholder}
+                                        </div>
+                                    </div>
+                                )
+                            }
+                        </Droppable>
+                    </DragDropContext>
                 </div>
             </ContextAPI.Provider>
         </Base>
