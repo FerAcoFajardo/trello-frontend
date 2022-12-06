@@ -28,11 +28,13 @@ const KanbanList = ({list, index}) => {
                                                 })
                                             }
                                             {providedDrop.placeholder}
+                                            {/* de momento */}
+                                            <AddCardOrList type="card" listId={list.id}/>
                                         </div>
                                     )
                                 }
                             </Droppable>
-                            <AddCardOrList type="card" listId={list.id}/>
+                            {/* <AddCardOrList type="card" listId={list.id}/> */}
                         </Paper>
                     </div>
                 )
