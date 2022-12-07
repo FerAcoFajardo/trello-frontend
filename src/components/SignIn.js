@@ -13,17 +13,21 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from './Footer';
+import UserService from '../services/user.service.js';
+
+const userService = new UserService();
 
 const theme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const result = await userService.login(
+      data.get('email'), 
+      data.get('password')
+    );
+    console.log("result: ", result);
   };
 
   return (
@@ -74,7 +78,6 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              href="/"
             >
               Sign In
             </Button>
