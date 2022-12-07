@@ -1,0 +1,17 @@
+.side-bar-link {
+    text-decoration: none;
+}
+
+.side-bar-link:active {
+    color: #1976D2;
+    text-decoration: none; 
+}
+
+a:visited { 
+    color: #1976D2;
+    text-decoration: none; 
+}
+
+.side-bar-text {
+    color: rgb(37, 37, 37);
+}
