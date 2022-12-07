@@ -8,6 +8,7 @@ import DeskIcon from '@mui/icons-material/Desk';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { Link } from "react-router-dom";
+import './SideBarList.css'
 
 export const mainListItems = (
   <React.Fragment>
@@ -17,28 +18,30 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Home" />
     </ListItemButton> */}
-    
-    <ListItemButton>
-      <ListItemIcon>
-        <DeskIcon />
-      </ListItemIcon>
-      <Link to="/workspaces" underline="none">
-        <ListItemText primary="Workspaces" />
-      </Link>
-    </ListItemButton>
-    
-    <ListItemButton>
-      <ListItemIcon>
-        <LogoutIcon />
-      </ListItemIcon>
-      <Link to="/signIn" underline="none">
-        <ListItemText primary="Logout" />
-      </Link>
-    </ListItemButton>
+
+    <Link className='side-bar-link' to="/workspaces" underline="none">
+      <ListItemButton>
+        <ListItemIcon>
+          <DeskIcon />
+        </ListItemIcon>
+        <ListItemText className='side-bar-text' primary="Workspaces" />
+      </ListItemButton>
+    </Link>
+
+    <Link className='side-bar-link' to="/signIn" underline="none">
+      <ListItemButton>
+        <ListItemIcon>
+          <LogoutIcon />
+        </ListItemIcon>     
+        <ListItemText className='side-bar-text' primary="Logout" />
+      </ListItemButton>
+    </Link>
   </React.Fragment>
 );
 
+
 export const secondaryListItems = (
+
   <React.Fragment>
     <ListSubheader component="div" inset>
       Saved reports
