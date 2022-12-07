@@ -20,10 +20,10 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import FormControl from '@mui/material/FormControl';
-
+import Swal from 'sweetalert2'
 
 import UserService from '../services/user.service.js';
-
+import { writeError, clearError} from '../utils/errors.js';
 const userService = new UserService();
 
 const theme = createTheme();
@@ -61,17 +61,43 @@ export default function SignUp() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const result = await userService.createUser(
-      data.get("profilePicture"),
-      data.get('firstName'), 
-      data.get('lastName'), 
-      data.get('secondLastName'),
-      data.get('birthDate'),
-      data.get('phone'),
-      data.get('email'), 
-      data.get('password')
-    );
-    console.log("result: ", result);
+    try{
+      const result = await userService.createUser(
+        data.get("profilePicture"),
+        data.get('firstName'), 
+        data.get('lastName'), 
+        data.get('secondLastName'),
+        data.get('birthDate'),
+        data.get('phone'),
+        data.get('email'), 
+        data.get('password')
+      );
+  
+      if (result.status === 200) {
+        Swal.fire({
+          title: 'Success!',
+          text: 'User created sucessfully',
+          icon: 'success',
+          confirmButtonText: 'Cool'
+          
+        }).then(() => {
+          window.location.href = "/signIn";
+        });
+
+      }else{
+        // Fire sweet alert
+        console.log(result);
+      }
+
+    }catch (e) {
+      // Fire sweet alert
+
+    }
+
+
+
+
+
   };
 
   return (

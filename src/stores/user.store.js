@@ -8,9 +8,6 @@ export default class UserStore{
 
 
     async login(email, password){
-        console.log("email: ", email);
-        console.log("password:", password);
-        console.log("API_URL: ", this.URL);
 
         const result = await fetch(`${this.URL}/auth/login`, {
             method: 'POST',
@@ -23,23 +20,19 @@ export default class UserStore{
             })
         });
 
-        const data = await result.json();
-
-        console.log("data: ", data);
-
-        return data;
+        return result;
 
     }
 
     async createUser(profiePicture, name, firstSurname, secondSurname, birthdate, telephone, email, password){
-        console.log("name: ", name);
-        console.log("first_surname: ", firstSurname);
-        console.log("second_surname: ", secondSurname);
-        console.log("email: ", email);
-        console.log("phone: ", telephone);
-        console.log("password: ", password);
-        console.log("birthdate: ", birthdate);
-        console.log("profiePicture: ", profiePicture);
+        // console.log("name: ", name);
+        // console.log("first_surname: ", firstSurname);
+        // console.log("second_surname: ", secondSurname);
+        // console.log("email: ", email);
+        // console.log("phone: ", telephone);
+        // console.log("password: ", password);
+        // console.log("birthdate: ", birthdate);
+        // console.log("profiePicture: ", profiePicture);
         
         const result = await fetch(`${this.URL}/users`, {
             method: 'POST',
@@ -47,6 +40,7 @@ export default class UserStore{
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                // img_profile: profiePicture,
                 name: name,
                 first_surname: firstSurname,
                 second_surname: secondSurname,
@@ -57,7 +51,6 @@ export default class UserStore{
             })
         });
 
-        const data = await result.json();
-        return data;
+                return result;
     }
 }
