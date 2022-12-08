@@ -13,7 +13,6 @@ export default class WorkspaceService {
 
     async getWorkspaces() {
         try{
-            console.log(this.token.substring(3));
             const data = await this.store.getWorkspaces(this.token.substring(3));
             return data;
         }catch (e) {

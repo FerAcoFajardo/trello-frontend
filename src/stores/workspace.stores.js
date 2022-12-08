@@ -16,7 +16,6 @@ export default class WorkspaceStore{
                 'Content-Type': 'application/json'
             }
         }
-        console.log(request);
 
         const result = await fetch(`${this.URL}/workspaces`, request);
 
