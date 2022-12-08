@@ -5,31 +5,30 @@ import AddCardOrList from './AddCardOrList';
 import KanbanCard from './KanbanCard';
 import ListTitle from './ListTitle';
 
-const KanbanList = ({list, index}) => {
+const KanbanList = ({column, index}) => {
     const classes = useStyle();
-    const {id, title, cards} = list;
     
     return (
-        <Draggable draggableId={id} key={id} index={index}>
+        <Draggable draggableId={column._id} key={column._id} index={index}>
             {
                 (provided) => (
                     <div {...provided.draggableProps} ref={provided.innerRef}>
                         <Paper className={classes.root} {...provided.dragHandleProps}>
                             <CssBaseline />
-                            <ListTitle title={title} listId={id} key={id}/>
+                            <ListTitle title={column._title} listId={column._id} key={column._id}/>
 
-                            <Droppable droppableId={id}>
+                            <Droppable droppableId={column._id}>
                                 {
                                     (providedDrop) => (
                                         <div ref={providedDrop.innerRef} {...providedDrop.droppableProps}>
                                             {
-                                                cards.map((card, index) => {
-                                                    return <KanbanCard card={card} key={card.id} index={index} />
+                                                column.cards.map((card, index) => {
+                                                    return <KanbanCard card={card} key={card._id} index={index} />
                                                 })
                                             }
                                             {providedDrop.placeholder}
                                             {/* de momento */}
-                                            <AddCardOrList type="card" listId={list.id}/>
+                                            <AddCardOrList type="card" listId={column._id}/>
                                         </div>
                                     )
                                 }

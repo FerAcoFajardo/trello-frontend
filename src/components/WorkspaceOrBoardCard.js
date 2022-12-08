@@ -10,6 +10,8 @@ function WorkspaceCard(props) {
   const url = (props.entity === "Workspace") 
                 ? `/workspaces/${props.workspaceId}/boards`
                 : `/workspaces/${props.workspaceId}/boards/${props.cardId}`;
+  
+  
   return (
     <Card
         sx={{ maxWidth: 345, display: 'flex', flexDirection: 'column'}}

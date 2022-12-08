@@ -8,7 +8,7 @@ export default class WorkspaceService {
 
     constructor() {
         this.store = new WorkspaceStore();
-        this.token = getToken().substring(3);
+        this.token = getToken()?.substring(3);
     }
 
     async getWorkspaces() {
@@ -23,6 +23,15 @@ export default class WorkspaceService {
     async getWorkspace(id) {
         try{
             const data = await this.store.getWorkspace(id, this.token);
+            return data;
+        }catch (e) {
+            throw new ServiceError("Error in creation of workspace");
+        }
+    }
+
+    async deleteWorkspace(id) {
+        try{
+            const data = await this.store.deleteWorkspace(id, this.token);
             return data;
         }catch (e) {
             throw new ServiceError("Error in creation of workspace");

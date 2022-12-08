@@ -40,4 +40,18 @@ export default class WorkspaceStore{
         return result;
     }
 
+    async deleteWorkspace(id, token){
+        const request = {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer'+token,
+                'Content-Type': 'application/json'
+            }
+        }
+
+        const result = await fetch(`${this.URL}/workspaces/${id}`, request);
+
+        return result;
+    }
+
 }

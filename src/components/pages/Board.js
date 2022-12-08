@@ -1,68 +1,135 @@
 import { makeStyles } from '@material-ui/core';
 import KanbanList from '../KanbanList';
 import AddCardOrList from '../AddCardOrList';
-import {useState} from 'react';
-import uuid from "react-uuid";
-import mockData from '../../mockdata.js';
+import { useState, useEffect, } from 'react';
 import ContextAPI from '../../utils/contextAPI.js';
 import Base from '../Base';
 import { useParams } from "react-router-dom";
 import NotFound from './NotFound';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import WorkspaceService from '../../services/workspace.service.js';
+import BoardService from '../../services/board.service.js';
+import ColumnService from '../../services/column.service.js';
+import Swal from 'sweetalert2';
+import CardService from '../../services/card.service';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+
+
+const boardService = new BoardService();
+const workspaceService = new WorkspaceService();
+const columnService = new ColumnService();
+
 
 function Board() {
     
 
     const classes = useStyle();
-    const [data, setData] = useState(mockData);
 
     let { workspaceId, boardId } = useParams();
+
+    const [boardData, setBoard] = useState(null);
+    const [workspaceData, setWorkspace] = useState(null);
+    const [cardsColumns, setColumns] = useState([]);
+    const [cards, setCards] = useState([]);
     
+    useEffect(() => {
+        workspaceService.getWorkspace(workspaceId).then((data) => {
+            data.json().then((data) => {
+            setWorkspace(data.result);
+            });
+        }).catch((e) => {
+            console.log(e);
+        });
+
+        boardService.getBoard(boardId).then((data) => {
+        
+        data.json().then((data) => {
+            setBoard(data.result);
+        });
+        }).catch((e) => {
+            console.log(e);
+        });
+
+        columnService.getColumnsByBoard(boardId).then((data) => {
+        
+        data.json().then((data) => {
+            setColumns(data.result);
+        });
+        }).catch((e) => {
+            console.log(e);
+        });
+
+
+    }, []);
+    
+
     if (!workspaceId || !boardId) return <NotFound />;
     
-    const workspaceData = data.workspaces[workspaceId-1]?.boards[boardId-1];
-    const workspaceList = data.workspaces[workspaceId-1]?.boards[boardId-1]?.lists
-    if (!workspaceList) return <NotFound />;
+    if (!cardsColumns) return <NotFound />;
 
     
     
     const updateColumnTitle = (newTitle, listId) => {
-        const list = workspaceData.lists[listId];
-        list.title = newTitle;
-        const newData = {...data};
-        newData.workspaces[workspaceId-1].boards[boardId-1].lists[listId] = list;
-        setData(newData);
+        columnService.updateColumTitle(listId, newTitle).then((data) => {
+            data.json().then((data) => {
+                console.log(data);
+            });
+        }).catch((e) => {
+            console.log(e);
+        });
+    }
     
+    const updateCardColum = async (cardId, columnId) => {
+        const result = await CardService.updateCardColum(cardId, columnId);
+        if(result.status === 200){
+            const data = await result.json();
+            console.log(data);
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                confirmButtonText: 'Ok'
+            })
+        }
     }
 
-    const addCard = (text, listId) => {
-        const newCardId = uuid();
-        const newCard = {
-            id: newCardId,
-            title:text
+    const addCard = async (text, listId) => {
+
+        const data = await columnService.addCard(text, listId);
+
+        if(data.status === 200){
+            const newData = await data.json();
+
+            console.log(newData);
+            // cards.push(newData.result);
+            // setColumns(cards);
+        }else{
+
+        }
+    }
+
+    const addList = async (text) => {
+        const data = await columnService.createColumn(text, boardId);
+        
+        if(data.status === 200){
+            const newData = await data.json();
+            const cardsCopy = cards;
+            cards.push(newData.result);
+            setCards(cardsCopy);
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                confirmButtonText: 'Ok'
+            })
         }
 
-        const list = workspaceData.lists[listId];
-        const cards = [...list.cards, newCard];
-        list.cards = cards
-        const dataCopy = {...data};
-        dataCopy.workspaces[workspaceId-1].boards[boardId-1].lists[listId] = list;
-        setData(dataCopy);
-
     }
 
-    const addList = (text) => {
-        const newListId = uuid();
-        const newList = {
-        id: newListId,
-        title:text,
-        cards:[]
-        }
-        const dataCopy = {...data};
-        dataCopy.workspaces[workspaceId-1].boards[boardId-1].lists[newListId] = newList;
-        setData(dataCopy);
-
-    }
+    
 
     const onDragEnd = (result) => {
         const {destination, source, draggableId, type} = result;    
@@ -71,48 +138,74 @@ function Board() {
         const sourceDroppableId = source?.droppableId;
         const sourceIndex = source?.index;
 
-        console.table([{sourceDroppableId, destDroppableId, draggableId}]);
-        console.table([{type, sourceIndex, destIndex}]);
+        // console.table([{sourceDroppableId, destDroppableId, draggableId}]);
+        // console.table([{type, sourceIndex, destIndex}]);
         if (!destination) return;
         if (sourceDroppableId === destDroppableId && sourceIndex === destIndex) return;
         
         if (type === 'list') {
-            const list = workspaceData.lists[draggableId];
-            console.log(result)
-            console.log(list, draggableId);
-            console.log(workspaceData.lists);
-            const lists = Object.values(workspaceData.lists);
-            lists.splice(sourceIndex, 1);
-            lists.splice(destIndex, 0, list);
-            const newData = {...data};
-            // lists to object
-            const listsObj = {};
-            lists.forEach(list => {
-                listsObj[list.id] = list;
-            })
-            newData.workspaces[workspaceId-1].boards[boardId-1].lists = listsObj;
-            setData(newData);
-            console.log(newData);
+            // const list = workspaceData.lists[draggableId];
+            // console.log(result)
+            // console.log(list, draggableId);
+            // console.log(workspaceData.lists);
+            // const lists = Object.values(workspaceData.lists);
+            // const lists = workspaceData;
+            // lists.splice(sourceIndex, 1);
+            // lists.splice(destIndex, 0, list);
+            // const newData = {...data};
+            // // lists to object
+            // const listsObj = {};
+            // lists.forEach(list => {
+            //     listsObj[list.id] = list;
+            // })
+            // cardsColumns.forEach((column) => {
+            //     if(column.id === draggableId){
+            //         column.position = destIndex;
+            //     }
+            // });
+            // setCardsColumns();
+            // setData(newData);
+            // console.log(newData);
             return;
         }
 
-        const sourceList = workspaceData.lists[sourceDroppableId];
-        console.log(sourceList);
-        const destList = workspaceData.lists[destDroppableId];
-        const sourceCards = [...sourceList.cards];
-        const destCards = destList === sourceList ? sourceCards : [...destList.cards];
-        const [removed] = sourceCards.splice(sourceIndex, 1);
-        destCards.splice(destIndex, 0, removed);
-        sourceList.cards = sourceCards;
-        destList.cards = destCards;
-        const newData = {...data};
-        newData.workspaces[workspaceId-1].boards[boardId-1].lists[sourceDroppableId] = sourceList;
-        newData.workspaces[workspaceId-1].boards[boardId-1].lists[destDroppableId] = destList;
-        setData(newData);
+        // const sourceList = workspaceData.lists[sourceDroppableId];
+        // console.log(sourceList);
+        // const destList = workspaceData.lists[destDroppableId];
+        // const sourceCards = [...sourceList.cards];
+        // const destCards = destList === sourceList ? sourceCards : [...destList.cards];
+        // const [removed] = sourceCards.splice(sourceIndex, 1);
+        // destCards.splice(destIndex, 0, removed);
+        // sourceList.cards = sourceCards;
+        // destList.cards = destCards;
+        // const newData = {...data};
+        // newData.workspaces[workspaceId-1].boards[boardId-1].lists[sourceDroppableId] = sourceList;
+        // newData.workspaces[workspaceId-1].boards[boardId-1].lists[destDroppableId] = destList;
+        // setData(newData);
     }
-    
+    //Show spinner while loading, if it takes too long just loads the page
+    if(!workspaceData){
+        return (
+        <Base title="Workspaces">
+            <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+                m: 'auto',
+
+            }}
+
+            >
+            <CircularProgress />
+            </Box>
+        </Base>
+        );
+    }
+    console.log(workspaceData);
     return (
-        <Base title={`${data.workspaces[workspaceId-1].title} > ${workspaceData.title}`}>
+        <Base title={`${workspaceData._title} > ${boardData._title}`}>
             <ContextAPI.Provider value={{updateColumnTitle, addCard, addList}}>
                 <div>
                     <DragDropContext onDragEnd={ onDragEnd }>
@@ -121,8 +214,8 @@ function Board() {
                                 (provided) => (
                                     <div className={classes.container} ref={provided.innerRef} {...provided.droppableProps}>
                                         {
-                                            Object.keys(workspaceList).map((key, index) => {
-                                                return <KanbanList list={workspaceList[key]} index={index} key={key} />
+                                            cardsColumns.map((column, index) => {
+                                                return <KanbanList list={column} index={column._id} key={column._id} />
                                             })
                                         }
                                         <div>
@@ -141,9 +234,9 @@ function Board() {
 }
 
 const useStyle = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-  }
+    container: {
+        display: 'flex',
+    }
 }))
 
 export default Board;

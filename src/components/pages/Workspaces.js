@@ -6,6 +6,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import WorkspaceCard from '../WorkspaceOrBoardCard';
 import WorkspaceService from '../../services/workspace.service.js';
+import TextField from '@mui/material/TextField';
+
 
 
 // const cards = mockData.workspaces;
@@ -32,9 +34,10 @@ function Workspace() {
   }, []);
 
   //Show spinner while loading, if it takes too long just loads the page
-  if(workspaces.length === 0){
+  if(!workspaces){
     return (
       <Base title="Workspaces">
+        <TextField id="standard-basic" label="Standard" variant="standard" />
         <Box
           sx={{
             display: 'flex',
@@ -42,7 +45,7 @@ function Workspace() {
             alignItems: 'center',
             height: '100vh',
             m: 'auto',
-
+            
           }}
 
         >
