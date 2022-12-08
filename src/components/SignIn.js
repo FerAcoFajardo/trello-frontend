@@ -36,7 +36,10 @@ export default function SignIn() {
         const data = await result.json();
         console.log(data);
         const token = data.token;
-        setToken(token);
+        if(!getToken()){
+          setToken(token);
+        }
+        
 
         window.location.href = "/";
   
