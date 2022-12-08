@@ -1,6 +1,6 @@
 
 
-class ServiceError extends Error{
+export default class ServiceError extends Error{
     constructor(instance, message){
         super(message); 
         this.instance = instance;

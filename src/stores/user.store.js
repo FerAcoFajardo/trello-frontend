@@ -1,9 +1,11 @@
-import {API_URL} from "../conf/settings.js";
+import EnvVariables from "../settings.js";
+
+const env = new EnvVariables();
 
 export default class UserStore{
 
     constructor(){
-        this.URL = API_URL;
+        this.URL = env.API_URL;
     }
 
 

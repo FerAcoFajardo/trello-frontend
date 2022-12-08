@@ -1,9 +1,12 @@
-import {API_URL} from "../conf/settings.js";
+import EnvVariables from "../settings.js";
 
+const env = new EnvVariables();
+
+console.log(env);
 export default class WorkspaceStore{
 
     constructor(){
-        this.URL = API_URL;
+        this.URL = env.API_URL;
     }
 
 
@@ -21,6 +24,21 @@ export default class WorkspaceStore{
 
         return result;
 
+    }
+
+    async getWorkspace(id, token){
+            
+        const request = {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer'+token,
+                'Content-Type': 'application/json'
+            }
+        }
+
+        const result = await fetch(`${this.URL}/workspaces/${id}`, request);
+
+        return result;
     }
 
 }

@@ -1,12 +1,11 @@
-import mockData from '../../mockdata.js';
 import Base from '../Base';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import WorkspaceCard from '../WorkspaceOrBoardCard';
-import { useState, useEffect, useCallback } from 'react';
-import WorkspaceService from '../../services/workspace.service.js';
+import { useState, useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import WorkspaceCard from '../WorkspaceOrBoardCard';
+import WorkspaceService from '../../services/workspace.service.js';
 
 
 // const cards = mockData.workspaces;
@@ -20,10 +19,6 @@ function Workspace() {
 
   const [workspaces, setWorkspaces] = useState([]);
 
-  // const handleLoadWorkspaces = useCallback(async () => {
-    
-  // }, []);
-  
   
   useEffect(() => {
     workspaceService.getWorkspaces().then((data) => {
@@ -40,7 +35,17 @@ function Workspace() {
   if(workspaces.length === 0){
     return (
       <Base title="Workspaces">
-        <Box sx={{ display: 'flex' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            m: 'auto',
+
+          }}
+
+        >
           <CircularProgress />
         </Box>
       </Base>

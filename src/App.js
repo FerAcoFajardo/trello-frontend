@@ -7,6 +7,7 @@ import SignUp from './components/SignUp';
 import {StrictMode} from 'react';
 import {initApp} from './utils/auth.js';
 
+
 function App() {
   
   return (
