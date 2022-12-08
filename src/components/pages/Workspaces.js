@@ -6,6 +6,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import WorkspaceCard from '../WorkspaceOrBoardCard';
 import WorkspaceService from '../../services/workspace.service.js';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+
+
+
 
 
 // const cards = mockData.workspaces;
@@ -18,6 +23,7 @@ const workspaceService = new WorkspaceService();
 function Workspace() {
 
   const [workspaces, setWorkspaces] = useState([]);
+  const [title, setTitle] = useState("");
 
   
   useEffect(() => {
@@ -31,10 +37,34 @@ function Workspace() {
     });
   }, []);
 
+  const createWorkspace = () => {
+    // Get text from textfield
+    
+    workspaceService.createWorkspace(title).then((data) => {
+      data.json().then((data) => {
+        setWorkspaces([...workspaces, data.result]);
+      });
+    }).catch((e) => {
+      console.log(e);
+    });
+  }
+
   //Show spinner while loading, if it takes too long just loads the page
   if(workspaces.length === 0){
     return (
       <Base title="Workspaces">
+        <Box sx={{display:"flex", alignItems: 'end', justifyContent: 'end'}} onClick={createWorkspace}>
+          <Button sx={{mr:2, mb:1}} variant="contained">Create workspace</Button>
+
+          <TextField 
+          sx={{mb:1}} 
+          value={title} 
+          onChange={e => setTitle(e.target.value)} 
+          id="standard-basic" 
+          label="Standard" 
+          variant="standard" 
+          />
+        </Box>
         <Box
           sx={{
             display: 'flex',
@@ -57,6 +87,19 @@ function Workspace() {
   return (
     <Base title="Workspaces">
         <Container sx={{ py: 8 }}>
+
+          <Box sx={{display:"flex", alignItems: 'end', justifyContent: 'end'}} onClick={createWorkspace}>
+            <Button sx={{mr:2, mb:1}} variant="contained">Create workspace</Button>
+
+            <TextField 
+            sx={{mb:1}} 
+            value={title} 
+            onChange={e => setTitle(e.target.value)} 
+            id="standard-basic" 
+            label="Standard" 
+            variant="standard" 
+            />
+          </Box>
           {/* End hero unit */}
           <Grid container spacing={4}>
             

@@ -29,5 +29,13 @@ export default class WorkspaceService {
         }
     }
 
+    async createWorkspace(title) {
+        try{
+            const data = await this.store.createWorkspace(title, this.token);
+            return data;
+        }catch (e) {
+            throw new ServiceError("Error in creation of workspace");
+        }
+    }
 
 }

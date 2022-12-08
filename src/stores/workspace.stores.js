@@ -40,4 +40,22 @@ export default class WorkspaceStore{
         return result;
     }
 
+    async createWorkspace(title, token){
+        const request = {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer'+token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: title
+            })
+        }
+
+        const result = await fetch(`${this.URL}/workspaces`, request);
+
+        return result;
+    }
+
+
 }
