@@ -8,7 +8,7 @@ export default class WorkspaceService {
 
     constructor() {
         this.store = new WorkspaceStore();
-        this.token = getToken().substring(3);
+        this.token = getToken()?.substring(3);
     }
 
     async getWorkspaces() {
