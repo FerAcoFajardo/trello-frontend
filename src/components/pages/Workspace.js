@@ -26,7 +26,7 @@ function Boards() {
   useEffect(() => {
       workspaceService.getWorkspace(id).then((data) => {
         data.json().then((data) => {
-            setWorkspace(data.result);
+          setWorkspace(data.result);
         });
       }).catch((e) => {
         console.log(e);
@@ -42,12 +42,51 @@ function Boards() {
       });
   }, []);
 
-    
+  
+  //Show spinner while loading, if it takes too long just loads the page
+  if(boardsData.length === 0){
+    return (
+      <Base title="Boards">
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            m: 'auto',
+
+          }}
+
+        >
+          <CircularProgress />
+        </Box>
+      </Base>
+    );
+  }
+
   if (!id) return <NotFound />;
   
   if (!boardsData) return <NotFound />;
+
+  // return (
+  //   <Base title="Boards">
+  //     <Box
+  //       sx={{
+  //         display: 'flex',
+  //         justifyContent: 'center',
+  //         alignItems: 'center',
+  //         height: '100vh',
+  //         m: 'auto',
+
+  //       }}
+
+  //     >
+  //       <CircularProgress />
+  //     </Box>
+  //   </Base>
+  // );
   
-  const title = `${workspace.title} > Tableros`;
+  const title = `${workspace._title} > Tableros`;
   return (
     <Base title={title}>
         <Container sx={{ py: 8 }}>

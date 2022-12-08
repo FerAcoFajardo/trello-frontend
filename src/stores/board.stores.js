@@ -2,7 +2,6 @@ import EnvVariables from "../settings.js";
 
 
 const env = new EnvVariables();
-console.log(env);
 
 export default class WorkspaceStore{
 
