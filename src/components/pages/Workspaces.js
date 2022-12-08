@@ -29,25 +29,24 @@ function Workspace() {
     workspaceService.getWorkspaces().then((data) => {
     
       data.json().then((data) => {
-        setWorkspaces(data);
+        setWorkspaces(data.result);
       });
     }).catch((e) => {
       console.log(e);
     });
   }, []);
 
-  if(!workspaces.result) return (
-    <Box sx={{ display: 'flex' }}
-      container
-      spacing={0}
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-      style={{ minHeight: '100vh' }}
-    >
-      <CircularProgress />
-    </Box>
-  )
+  //Show spinner while loading, if it takes too long just loads the page
+  if(workspaces.length === 0){
+    return (
+      <Base title="Workspaces">
+        <Box sx={{ display: 'flex' }}>
+          <CircularProgress />
+        </Box>
+      </Base>
+    );
+  }
+  
   
 
   return (
@@ -57,7 +56,7 @@ function Workspace() {
           <Grid container spacing={4}>
             
             {
-            workspaces.result.map((workspace) => (
+            workspaces.map((workspace) => (
               <Grid item key={workspace._id} xs={12} sm={6} md={4}>
                 <WorkspaceCard entity={"Workspace"} workspaceId={workspace._id} image={workspace._image} title={workspace._title} />
               </Grid>

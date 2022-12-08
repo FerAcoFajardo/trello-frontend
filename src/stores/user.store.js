@@ -33,6 +33,7 @@ export default class UserStore{
         // console.log("password: ", password);
         // console.log("birthdate: ", birthdate);
         // console.log("profiePicture: ", profiePicture);
+        console.log("profiePicture: ", profiePicture);
         
         const result = await fetch(`${this.URL}/users`, {
             method: 'POST',

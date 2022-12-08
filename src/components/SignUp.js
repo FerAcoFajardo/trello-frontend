@@ -33,7 +33,6 @@ const theme = createTheme();
 export default function SignUp() {
 
   const [values, setValues] = React.useState({
-    profilePicture:"",
     firstName: "",
     lastName: "",
     secondLastName: "",
@@ -42,6 +41,14 @@ export default function SignUp() {
     email: "",
     password: "",
   });
+  
+
+  const [selectedFile, setSelectedFile] = React.useState(null);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -85,11 +92,23 @@ export default function SignUp() {
         });
 
       }else{
-        console.log(result);
+      // TODO: Change to something more specific
+        Swal.fire({
+          title: 'Error!',
+          text: 'There was an error creating the user, please try again',
+          icon: 'error',
+          confirmButtonText: 'Cool'
+        });
       }
 
     }catch (e) {
-      // Fire sweet alert
+      // TODO: Change to something more specific
+      Swal.fire({
+        title: 'Error!',
+        text: 'There was an error creating the user, please try again',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      });
 
     }
 
