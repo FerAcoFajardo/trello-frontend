@@ -14,7 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from './Footer';
 import UserService from '../services/user.service.js';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import { useInsertionEffect } from 'react';
 import { getToken, setToken } from '../utils/auth.js';
 

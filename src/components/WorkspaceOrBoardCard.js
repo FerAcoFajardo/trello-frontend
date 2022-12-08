@@ -14,13 +14,13 @@ function WorkspaceCard(props) {
     <Card
         sx={{ maxWidth: 345, display: 'flex', flexDirection: 'column'}}
     >
-        <CardMedia
+        {/* <CardMedia
           component="img"
           height="120"
           image={props.image}
           alt="random"
           
-        />
+        /> */}
         <CardContent sx={{ flexGrow: 1 }}>
           <Typography gutterBottom variant="h5" component="h2">
               {props.title}

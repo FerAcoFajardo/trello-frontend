@@ -16,9 +16,17 @@ export default class BoardService {
             const data = await this.store.getBoardByWorkspace(id, this.token);
             return data;
         }catch (e) {
-            throw new ServiceError("Error in login");
+            throw new ServiceError("Error getting boards");
         }
     }
 
+    async getBoard(id) {
+        try{
+            const data = await this.store.getBoard(id, this.token);
+            return data;
+        }catch (e) {
+            throw new ServiceError("Error in getting board");
+        }
+    }
 
 }

@@ -25,4 +25,18 @@ export default class WorkspaceStore{
         return result;
     }
 
+    async getBoard(id, token){
+        const request = {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer'+token,
+                'Content-Type': 'application/json'
+            }
+        }
+
+        const result = await fetch(`${this.URL}/boards/${id}`, request);
+
+        return result;
+    }
+
 }

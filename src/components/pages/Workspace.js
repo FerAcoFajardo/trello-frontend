@@ -68,23 +68,7 @@ function Boards() {
   
   if (!boardsData) return <NotFound />;
 
-  // return (
-  //   <Base title="Boards">
-  //     <Box
-  //       sx={{
-  //         display: 'flex',
-  //         justifyContent: 'center',
-  //         alignItems: 'center',
-  //         height: '100vh',
-  //         m: 'auto',
 
-  //       }}
-
-  //     >
-  //       <CircularProgress />
-  //     </Box>
-  //   </Base>
-  // );
   
   const title = `${workspace._title} > Tableros`;
   return (
@@ -93,8 +77,8 @@ function Boards() {
           {/* End hero unit */}
           <Grid container spacing={4}>
             {boardsData.map((card) => (
-              <Grid item key={card.id} xs={12} sm={6} md={4}>
-                <WorkspaceCard entity="Board" workspaceId={workspace.id} cardId={card.id} image={card.image} title={card.title} />
+              <Grid item key={card._id} xs={12} sm={6} md={4}>
+                <WorkspaceCard entity="Board" workspaceId={workspace._id} cardId={card._id} image={card.image} title={card._title} />
               </Grid>
             ))}
           </Grid>
