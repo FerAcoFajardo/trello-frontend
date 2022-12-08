@@ -14,20 +14,45 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from './Footer';
 import UserService from '../services/user.service.js';
+import Swal from 'sweetalert2'
+import { useInsertionEffect } from 'react';
+import { getToken, setToken } from '../utils/auth.js';
 
 const userService = new UserService();
 
 const theme = createTheme();
 
 export default function SignIn() {
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const result = await userService.login(
-      data.get('email'), 
-      data.get('password')
-    );
-    console.log("result: ", result);
+    try{
+      const data = new FormData(event.currentTarget);
+      const result = await userService.login(
+        data.get('email'), 
+        data.get('password')
+      );
+      if (result.status === 200) {
+        const data = await result.json();
+        console.log(data);
+        const token = data.token;
+        setToken(token);
+
+        window.location.href = "/";
+  
+      }else{
+        // Show error message in first input
+        
+      }
+    }catch(error){
+      Swal.fire({
+        title: 'Error!',
+        text: 'Unexcepted error',
+        icon: 'error',
+        confirmButtonText: 'Ok'
+        
+      })
+    }
   };
 
   return (

@@ -85,7 +85,6 @@ export default function SignUp() {
         });
 
       }else{
-        // Fire sweet alert
         console.log(result);
       }
 
