@@ -48,7 +48,7 @@ export default class WorkspaceStore{
             },
             body: JSON.stringify({
                 title: title,
-                workspaceId: workspaceId
+                workspace: workspaceId
             })
         }
 

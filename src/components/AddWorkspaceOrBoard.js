@@ -2,9 +2,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
-const AddWorkspaceOrBoard = ({ addWorkspaceOrBoard, text, title, handler, workspaceId }) => {
+const AddWorkspaceOrBoard = ({ addWorkspaceOrBoard, text, title, handler }) => {
 
-    console.log('workspaceId: ', workspaceId);
 
     return ( 
         <Box sx={{display:"flex", alignItems: 'end', justifyContent: 'end', mb:5}} >
@@ -16,7 +15,7 @@ const AddWorkspaceOrBoard = ({ addWorkspaceOrBoard, text, title, handler, worksp
             <TextField 
             sx={{mb:1}} 
             value={title} 
-            onChange={e => handler(e.target.value, workspaceId)} 
+            onChange={e => handler(e.target.value)} 
             id="standard-basic" 
             label={`Enter ${text} name`} 
             variant="standard" 

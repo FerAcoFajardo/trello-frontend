@@ -65,17 +65,19 @@ function Boards() {
         setBoardTitle("");
       });
     }else{
+      console.log(workspace._id);
       boardService.createBoard(boardTitle, workspace._id).then((data) => {
         if(!boardsData){
           data.json().then((data) => {
             setBoards(data.result || []);
             setBoardTitle("");
           });
-        }
-        else{
+        }else{
           data.json().then((data) => {
-            setBoards([...boardsData, data.result]);
-            setBoardTitle("");
+            if(data.result){
+              setBoards([...boardsData, data.result]);
+              setBoardTitle("");
+            }
           });
         }  
       }).catch((e) => {

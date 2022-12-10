@@ -5,6 +5,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import Swal from 'sweetalert2';
 
 
 function WorkspaceCard(props) {
@@ -21,7 +22,25 @@ function WorkspaceCard(props) {
   const secondId = (props.entity === "Card") ? props.workspaceId : undefined;
 
   const handleDeleteCardBoard = () => {
-    props.handleDelete(id, secondId);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      console.log(result);
+      if (result.isConfirmed) {
+        props.handleDelete(id, secondId);
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+      }
+    })
   }
 
         
