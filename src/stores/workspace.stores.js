@@ -10,7 +10,6 @@ export default class WorkspaceStore{
 
 
     async getWorkspaces(token){
-        console.log(token);
         const request = {
             method: 'GET',
             headers: {
