@@ -95,6 +95,18 @@ function Workspace() {
     }
   };
 
+  const handleUpdateWorkspace = async (id, title) => {
+    const result = await workspaceService.updateWorkspace(id, title);
+    
+    if(result.status !== 200){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+      });
+    }
+    return result;
+  }
 
 
   return (
@@ -113,7 +125,14 @@ function Workspace() {
             {
             workspaces.map((workspace) => (
               <Grid item key={workspace._id} xs={12} sm={6} md={4}>
-                <WorkspaceCard entity={"Workspace"} handleDelete={handleDeleteWorkspace} workspaceId={workspace._id} image={workspace._image} title={workspace._title} />
+                <WorkspaceCard 
+                entity={"Workspace"} 
+                handleUpdate={handleUpdateWorkspace}
+                handleDelete={handleDeleteWorkspace} 
+                workspaceId={workspace._id} 
+                image={workspace._image} 
+                title={workspace._title} 
+              />
               </Grid>
             ))
             }

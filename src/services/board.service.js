@@ -46,6 +46,15 @@ export default class BoardService {
             throw new ServiceError("Error deleting a board");
         }
     }
+
+    async updateBoard(id, title) {
+        try{
+            const data = await this.store.updateBoard(id, title, this.token);
+            return data;
+        }catch (e) {
+            throw new ServiceError("Error updating a board");
+        }
+    }
     
 
 }

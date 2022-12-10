@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Typography from '@mui/material/Typography';
+import {Typography, InputBase, makeStyles} from '@material-ui/core';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -9,8 +9,9 @@ import Swal from 'sweetalert2';
 
 
 function WorkspaceCard(props) {
-
-  
+  const [open, setOpen] = React.useState(false);
+  const [newTitle, setNewTitle] = React.useState(props.title);
+  const classes = useStyle();
 
   const url = (props.entity === "Workspace") 
                 ? `/workspaces/${props.workspaceId}/boards`
@@ -31,7 +32,6 @@ function WorkspaceCard(props) {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
-      console.log(result);
       if (result.isConfirmed) {
         props.handleDelete(id, secondId);
         Swal.fire(
@@ -43,6 +43,16 @@ function WorkspaceCard(props) {
     })
   }
 
+  const handleBlur = async () => {
+    const result = await props.handleUpdate(id, newTitle);
+    console.log(result);
+    if (result.status === 200) {
+      setNewTitle(newTitle);
+    }else{
+      setNewTitle(props.title);
+    }
+    setOpen(false);
+  }
         
   return (
     <Card
@@ -56,9 +66,24 @@ function WorkspaceCard(props) {
           
         /> */}
         <CardContent sx={{ flexGrow: 1 }}>
-          <Typography gutterBottom variant="h5" component="h2">
-              {props.title}
-          </Typography>
+          
+
+          {open ? ( 
+                <InputBase 
+                  className={useStyle.input}
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    autoFocus
+                    onBlur={handleBlur}
+                    fullWidth
+                    inputProps={{className:classes.input}}
+                />
+
+            ) : (
+              <Typography gutterBottom variant="h5" component="h2" onClick={() =>setOpen(true)}>
+                  {newTitle}
+              </Typography>
+            )}
         </CardContent>
         <CardActions  style={{justifyContent: 'center'}}>
           <Button size="small" href={url}>View</Button>
@@ -69,4 +94,14 @@ function WorkspaceCard(props) {
   );
 }
 
+
+const useStyle = makeStyles(theme => ({
+  input: {
+    fontSize: '1.5rem',
+    margin: theme.spacing(-0.1),
+    '&:focus': {
+      background: '#f5f5f5',
+    }
+  }
+}))
 export default WorkspaceCard;

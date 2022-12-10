@@ -72,4 +72,21 @@ export default class WorkspaceStore{
         return result;
 
     }
+
+    async updateBoard(id, title, token){
+        const request = {
+            method: 'PATCH',
+            headers: {
+                'Authorization': 'Bearer'+token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: title
+            })
+        }
+
+        const result = await fetch(`${this.URL}/boards/${id}`, request);
+
+        return result;
+    }
 }

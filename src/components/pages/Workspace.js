@@ -7,8 +7,6 @@ import { useParams } from "react-router-dom";
 import NotFound from './NotFound';
 import WorkspaceService from '../../services/workspace.service.js';
 import BoardService from '../../services/board.service.js';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 import Swal from 'sweetalert2';
 import AddWorkspaceOrBoard from '../AddWorkspaceOrBoard';
 
@@ -65,7 +63,6 @@ function Boards() {
         setBoardTitle("");
       });
     }else{
-      console.log(workspace._id);
       boardService.createBoard(boardTitle, workspace._id).then((data) => {
         if(!boardsData){
           data.json().then((data) => {
@@ -113,11 +110,24 @@ function Boards() {
     }
   };
 
+  const handleUpdateBoard = async (id, title) => {
+    const result = await boardService.updateBoard(id, title);
+    
+    if(result.status !== 200){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+      });
+    }
+    return result;
+  }
+
   if (!id) return <NotFound />;
   
   if (!boardsData) return <NotFound />;
 
-  const title = `${workspace?._title} > Tableros`;
+  const title = `${workspace?._title} > Boards`;
   return (
     <Base title={title}>
         <Container sx={{ py: 8 }}>
@@ -131,7 +141,15 @@ function Boards() {
           <Grid container spacing={4}>
             {boardsData?.map((board) => (
               <Grid item key={board._id} xs={12} sm={6} md={4}>
-                <WorkspaceCard entity="Board" workspaceId={id} cardId={board._id} image={board.image} handleDelete={handleDeleteBoard} title={board._title} />
+                <WorkspaceCard 
+                  entity="Board" 
+                  workspaceId={id} 
+                  cardId={board._id} 
+                  image={board.image} 
+                  handleUpdate={handleUpdateBoard}
+                  handleDelete={handleDeleteBoard} 
+                  title={board._title} 
+                />
               </Grid>
             ))}
           </Grid>

@@ -47,4 +47,13 @@ export default class WorkspaceService {
         }
     }
 
+    async updateWorkspace(id, title) {
+        try{
+            const data = await this.store.updateWorkspace(id, title, this.token);
+            return data;
+        }catch (e) {
+            throw new ServiceError("Error deleting a workspace");
+        }
+    }
+
 }

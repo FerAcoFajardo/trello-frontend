@@ -72,5 +72,23 @@ export default class WorkspaceStore{
         return result;
     }
 
+    async updateWorkspace(id, title, token){
+        const request = {
+            method: 'PATCH',
+            headers: {
+                'Authorization': 'Bearer'+token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: title
+            })
+        }
+
+        const result = await fetch(`${this.URL}/workspaces/${id}`, request);
+
+        return result;
+    }
+
+
 
 }

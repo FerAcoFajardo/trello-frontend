@@ -7,19 +7,20 @@ const AddWorkspaceOrBoard = ({ addWorkspaceOrBoard, text, title, handler }) => {
 
     return ( 
         <Box sx={{display:"flex", alignItems: 'end', justifyContent: 'end', mb:5}} >
-            <Button sx={{mr:2, mb:1}} 
-            onClick={addWorkspaceOrBoard}
-            variant="contained"
-            >Create {text}</Button>
-
             <TextField 
-            sx={{mb:1}} 
+            sx={{mb:1, mr:2}} 
             value={title} 
             onChange={e => handler(e.target.value)} 
             id="standard-basic" 
             label={`Enter ${text} name`} 
             variant="standard" 
             />
+
+            <Button sx={{ mb:1}} 
+            onClick={addWorkspaceOrBoard}
+            variant="contained"
+            >Add {text}</Button>
+
         </Box>
     );
 }
