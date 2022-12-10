@@ -15,7 +15,7 @@ export default class WorkspaceStore{
         const request = {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer'+token,
+                'Authorization': token,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -35,7 +35,7 @@ export default class WorkspaceStore{
         const request = {
             method: 'PATCH',
             headers: {
-                'Authorization': 'Bearer'+token,
+                'Authorization': token,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -57,7 +57,7 @@ export default class WorkspaceStore{
         const request = {
             method: 'PATCH',
             headers: {  
-                'Authorization': 'Bearer'+token,
+                'Authorization': token,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({

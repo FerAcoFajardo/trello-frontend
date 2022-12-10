@@ -8,7 +8,7 @@ export default class ColumnService {
 
     constructor() {
         this.store = new ColumnStore();
-        this.token = getToken()?.substring(3);
+        this.token = getToken();
     }
 
     async createColumn(title, boardId) {

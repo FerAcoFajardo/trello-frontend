@@ -45,7 +45,6 @@ function WorkspaceCard(props) {
 
   const handleBlur = async () => {
     const result = await props.handleUpdate(id, newTitle);
-    console.log(result);
     if (result.status === 200) {
       setNewTitle(newTitle);
     }else{

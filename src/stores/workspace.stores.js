@@ -10,11 +10,11 @@ export default class WorkspaceStore{
 
 
     async getWorkspaces(token){
-
+        console.log(token);
         const request = {
             method: 'GET',
             headers: {
-                'Authorization': 'Bearer'+token,
+                'Authorization': token,
                 'Content-Type': 'application/json'
             }
         }
@@ -30,7 +30,7 @@ export default class WorkspaceStore{
         const request = {
             method: 'GET',
             headers: {
-                'Authorization': 'Bearer'+token,
+                'Authorization': token,
                 'Content-Type': 'application/json'
             }
         }
@@ -44,7 +44,7 @@ export default class WorkspaceStore{
         const request = {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer'+token,
+                'Authorization': token,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -62,7 +62,7 @@ export default class WorkspaceStore{
         const request = {
             method: 'DELETE',
             headers: {
-                'Authorization': 'Bearer'+token,
+                'Authorization': token,
                 'Content-Type': 'application/json'
             }
         }
@@ -76,7 +76,7 @@ export default class WorkspaceStore{
         const request = {
             method: 'PATCH',
             headers: {
-                'Authorization': 'Bearer'+token,
+                'Authorization': token,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({

@@ -8,7 +8,7 @@ export default class CardService {
 
     constructor() {
         this.store = new CardStore();
-        this.token = getToken()?.substring(3);
+        this.token = getToken();
     }
 
     async createCard(title, columnId) {

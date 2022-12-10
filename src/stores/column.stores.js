@@ -13,7 +13,7 @@ export default class WorkspaceStore{
         const request = {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer'+token,
+                'Authorization': token,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -32,7 +32,7 @@ export default class WorkspaceStore{
         const request = {
             method: 'GET',
             headers: {
-                'Authorization': 'Bearer'+token,
+                'Authorization': token,
                 'Content-Type': 'application/json'
             }
         }
@@ -46,7 +46,7 @@ export default class WorkspaceStore{
         const request = {
             method: 'PUT',
             headers: {
-                'Authorization': 'Bearer'+token,
+                'Authorization': token,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({

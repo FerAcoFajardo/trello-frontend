@@ -8,7 +8,7 @@ export default class BoardService {
 
     constructor() {
         this.store = new BoardStore();
-        this.token = getToken()?.substring(3);
+        this.token = getToken();
     }
 
     async getBoardByWorkspace(id) {
