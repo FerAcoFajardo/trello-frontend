@@ -9,6 +9,7 @@ import WorkspaceService from '../../services/workspace.service.js';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Swal from 'sweetalert2';
+import AddWorkspaceOrBoard from '../AddWorkspaceOrBoard';
 
 
 
@@ -100,27 +101,17 @@ function Workspace() {
     <Base title="Workspaces">
         <Container sx={{ py: 8 }}>
 
-          <Box sx={{display:"flex", alignItems: 'end', justifyContent: 'end', mb:5}} >
-            <Button sx={{mr:2, mb:1}} 
-            onClick={createWorkspace}
-            variant="contained"
-            >Create workspace</Button>
-
-            <TextField 
-            sx={{mb:1}} 
-            value={title} 
-            onChange={e => setTitle(e.target.value)} 
-            id="standard-basic" 
-            label="Standard" 
-            variant="standard" 
-            />
-          </Box>
+          
+          <AddWorkspaceOrBoard 
+          addWorkspaceOrBoard={createWorkspace}
+          text={"workspace"}
+          title={title}
+          handler={setTitle} />
           {/* End hero unit */}
           <Grid container spacing={4}>
             
             {
-            
-            workspaces.length && workspaces.map((workspace) => (
+            workspaces.map((workspace) => (
               <Grid item key={workspace._id} xs={12} sm={6} md={4}>
                 <WorkspaceCard entity={"Workspace"} handleDelete={handleDeleteWorkspace} workspaceId={workspace._id} image={workspace._image} title={workspace._title} />
               </Grid>

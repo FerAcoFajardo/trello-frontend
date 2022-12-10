@@ -29,4 +29,23 @@ export default class BoardService {
         }
     }
 
+    async createBoard(title, workspaceId) {
+        try{
+            const data = await this.store.createBoard(title, workspaceId, this.token);
+            return data;
+        }catch (e) {
+            throw new ServiceError("Error in creation of board");
+        }
+    }
+
+    async deleteBoard(id) {
+        try{
+            const data = await this.store.deleteBoard(id, this.token);
+            return data;
+        }catch (e) {
+            throw new ServiceError("Error deleting a board");
+        }
+    }
+    
+
 }

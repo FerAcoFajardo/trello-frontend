@@ -5,11 +5,6 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import WorkspaceService from '../services/workspace.service.js';
-import Swal from 'sweetalert2';
-
-
-const workspaceService = new WorkspaceService();
 
 
 function WorkspaceCard(props) {
@@ -23,8 +18,10 @@ function WorkspaceCard(props) {
                 ? props.workspaceId
                 : props.cardId;
 
+  const secondId = (props.entity === "Card") ? props.workspaceId : undefined;
+
   const handleDeleteCardBoard = () => {
-    props.handleDelete(id);
+    props.handleDelete(id, secondId);
   }
 
         

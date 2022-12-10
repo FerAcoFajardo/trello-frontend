@@ -9,6 +9,8 @@ import WorkspaceService from '../../services/workspace.service.js';
 import BoardService from '../../services/board.service.js';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import Swal from 'sweetalert2';
+import AddWorkspaceOrBoard from '../AddWorkspaceOrBoard';
 
 
 
@@ -22,43 +24,112 @@ function Boards() {
 
   const [boardsData, setBoards] = useState([]);
   const [workspace, setWorkspace] = useState(null);
+  const [boardTitle, setBoardTitle] = useState("");
+
     
   useEffect(() => {
-      workspaceService.getWorkspace(id).then((data) => {
-        data.json().then((data) => {
-          setWorkspace(data.result);
-        });
-      }).catch((e) => {
-      });
-
-      boardService.getBoardByWorkspace(id).then((data) => {
-      
+    boardService.getBoardByWorkspace(id).then((data) => {
+    
       data.json().then((data) => {
-          setBoards(data.result || []);
-      });
+        setBoards(data.result || []);
       }).catch((e) => {
-        
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        });
       });
+    }).catch((e) => {
+      console.log(e);
+    });
+    workspaceService.getWorkspace(id).then((data) => {
+      data.json().then((data) => {
+        setWorkspace(data.result);
+      });
+    }).catch((e) => {
+      console.log(e);
+    });
+
   }, []);
 
   
 
+  const createBoard = () => {
+    // Get text from textfield
+    if(boardTitle.length === 0 ){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please enter a title!',
+      }).then(() => {
+        setBoardTitle("");
+      });
+    }else{
+      boardService.createBoard(boardTitle, workspace._id).then((data) => {
+        if(!boardsData){
+          data.json().then((data) => {
+            setBoards(data.result || []);
+            setBoardTitle("");
+          });
+        }
+        else{
+          data.json().then((data) => {
+            setBoards([...boardsData, data.result]);
+            setBoardTitle("");
+          });
+        }  
+      }).catch((e) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        }).then(() => {
+          setBoardTitle("");
+        });
+      });
+    }
+  }
+
+  const handleDeleteBoard = async (id) => {
+    const result = await boardService.deleteBoard(id);
+    
+    if(result.status === 200){
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Board deleted!',
+      });
+      // Remove the deleted workspace from the list
+      setBoards(boardsData.filter((board) => board._id !== id));
+
+    }else{
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+      });
+    }
+  };
 
   if (!id) return <NotFound />;
   
   if (!boardsData) return <NotFound />;
 
-
-  
-  const title = `${workspace._title} > Tableros`;
+  const title = `${workspace?._title} > Tableros`;
   return (
     <Base title={title}>
         <Container sx={{ py: 8 }}>
+        <AddWorkspaceOrBoard 
+          addWorkspaceOrBoard={createBoard}
+          text={"board"}
+          title={boardTitle}
+          workspaceId={id}
+          handler={setBoardTitle} />
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {boardsData.map((card) => (
-              <Grid item key={card._id} xs={12} sm={6} md={4}>
-                <WorkspaceCard entity="Board" workspaceId={workspace._id} cardId={card._id} image={card.image} title={card._title} />
+            {boardsData?.map((board) => (
+              <Grid item key={board._id} xs={12} sm={6} md={4}>
+                <WorkspaceCard entity="Board" workspaceId={id} cardId={board._id} image={board.image} handleDelete={handleDeleteBoard} title={board._title} />
               </Grid>
             ))}
           </Grid>

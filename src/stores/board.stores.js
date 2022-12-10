@@ -39,4 +39,37 @@ export default class WorkspaceStore{
         return result;
     }
 
+    async createBoard(title, workspaceId, token){
+        const request = {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer'+token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: title,
+                workspaceId: workspaceId
+            })
+        }
+
+        const result = await fetch(`${this.URL}/boards`, request);
+
+        return result;
+
+    }
+
+    async deleteBoard(id, token){
+        const request = {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer'+token,
+                'Content-Type': 'application/json'
+            }
+        }
+
+        const result = await fetch(`${this.URL}/boards/${id}`, request);
+
+        return result;
+
+    }
 }
