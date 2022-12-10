@@ -23,6 +23,7 @@ const userService = new UserService();
 const theme = createTheme();
 
 export default function SignIn() {
+  const [password, setPassword] = React.useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -34,7 +35,6 @@ export default function SignIn() {
       );
       if (result.status === 200) {
         const data = await result.json();
-        console.log(data);
         const token = data.token;
         if(!getToken()){
           setToken(token);
@@ -44,8 +44,13 @@ export default function SignIn() {
         window.location.href = "/";
   
       }else{
-        // Show error message in first input
-        
+        Swal.fire({
+          title: 'Error!',
+          text: 'Invalid credentials',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
+        setPassword('');
       }
     }catch(error){
       Swal.fire({
@@ -94,6 +99,8 @@ export default function SignIn() {
               name="password"
               label="Password"
               type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
               id="password"
               autoComplete="current-password"
             />

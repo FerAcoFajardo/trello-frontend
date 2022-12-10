@@ -5,11 +5,29 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import WorkspaceService from '../services/workspace.service.js';
+import Swal from 'sweetalert2';
+
+
+const workspaceService = new WorkspaceService();
+
 
 function WorkspaceCard(props) {
+
+  
+
   const url = (props.entity === "Workspace") 
                 ? `/workspaces/${props.workspaceId}/boards`
                 : `/workspaces/${props.workspaceId}/boards/${props.cardId}`;
+  const id = (props.entity === "Workspace")
+                ? props.workspaceId
+                : props.cardId;
+
+  const handleDeleteCardBoard = () => {
+    props.handleDelete(id);
+  }
+
+        
   return (
     <Card
         sx={{ maxWidth: 345, display: 'flex', flexDirection: 'column'}}
@@ -29,7 +47,7 @@ function WorkspaceCard(props) {
         <CardActions  style={{justifyContent: 'center'}}>
           <Button size="small" href={url}>View</Button>
           <Button size="small">Edit</Button>
-          <Button size="small">Remove</Button>
+          <Button size="small" onClick={handleDeleteCardBoard}>Remove</Button>
         </CardActions>
     </Card>
   );

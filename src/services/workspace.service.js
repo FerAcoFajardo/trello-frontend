@@ -38,4 +38,13 @@ export default class WorkspaceService {
         }
     }
 
+    async deleteWorkspace(id) {
+        try{
+            const data = await this.store.deleteWorkspace(id, this.token);
+            return data;
+        }catch (e) {
+            throw new ServiceError("Error deleting a workspace");
+        }
+    }
+
 }

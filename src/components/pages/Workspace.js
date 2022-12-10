@@ -29,40 +29,20 @@ function Boards() {
           setWorkspace(data.result);
         });
       }).catch((e) => {
-        console.log(e);
       });
 
       boardService.getBoardByWorkspace(id).then((data) => {
       
       data.json().then((data) => {
-          setBoards(data.result);
+          setBoards(data.result || []);
       });
       }).catch((e) => {
-        console.log(e);
+        
       });
   }, []);
 
   
-  //Show spinner while loading, if it takes too long just loads the page
-  if(boardsData.length === 0){
-    return (
-      <Base title="Boards">
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
-            m: 'auto',
 
-          }}
-
-        >
-          <CircularProgress />
-        </Box>
-      </Base>
-    );
-  }
 
   if (!id) return <NotFound />;
   

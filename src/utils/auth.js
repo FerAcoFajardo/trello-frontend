@@ -9,6 +9,10 @@ function setToken(token){
     localStorage.setItem('token', token);
 }
 
+function removeToken(){
+    localStorage.removeItem('token');
+}
+
 function initApp(){
     const token = getToken();
     if(token){
@@ -17,4 +21,6 @@ function initApp(){
 }
 
 
-export { getToken, setToken, initApp };
+
+
+export { getToken, setToken, removeToken, initApp };

@@ -9,6 +9,16 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { Link } from "react-router-dom";
 import './SideBarList.css'
+import UserService from '../services/user.service.js';
+
+
+const userService = new UserService();
+
+
+const handleLogOut = () => {
+  userService.logout();
+}
+
 
 export const mainListItems = (
   <React.Fragment>
@@ -28,14 +38,14 @@ export const mainListItems = (
       </ListItemButton>
     </Link>
 
-    <Link className='side-bar-link' to="/signIn" underline="none">
       <ListItemButton>
         <ListItemIcon>
           <LogoutIcon />
         </ListItemIcon>     
-        <ListItemText className='side-bar-text' primary="Logout" />
+        <ListItemText 
+        onClick={handleLogOut}
+        className='side-bar-text' primary="Logout" />
       </ListItemButton>
-    </Link>
   </React.Fragment>
 );
 
