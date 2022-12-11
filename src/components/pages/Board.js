@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import KanbanList from '../KanbanList';
 import AddCardOrList from '../AddCardOrList';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import uuid from "react-uuid";
 import mockData from '../../mockdata.js';
 import ContextAPI from '../../utils/contextAPI.js';
@@ -9,20 +9,57 @@ import Base from '../Base';
 import { useParams } from "react-router-dom";
 import NotFound from './NotFound';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import WorkspaceService from '../../services/workspace.service.js';
+import BoardService from '../../services/board.service.js';
+import ColumnService from '../../services/column.service.js';
+import Swal from 'sweetalert2';
+
+
+const boardService = new BoardService();
+const workspaceService = new WorkspaceService();
+const columnService = new ColumnService();
 
 function Board() {
-    
-
     const classes = useStyle();
-    const [data, setData] = useState(mockData);
 
     let { workspaceId, boardId } = useParams();
     
-    if (!workspaceId || !boardId) return <NotFound />;
+    const [workspace, setWorkspace] = useState(null);
+    const [board, setBoard] = useState(null);
+    const [columns, setColumns] = useState(null);
+
+    const [data, setData] = useState(mockData);
+
+    
+    useEffect(() => {
+
+        if(!workspaceId || !boardId) return;
+
+        // Getting the board
+        boardService.getBoard(boardId)
+        .then((response) => response.json())
+        .then((data) => setBoard(data.result))
+        .catch((e) => console.log(e));
+
+        // Getting the workspace
+        workspaceService.getWorkspace(workspaceId)
+        .then((response) => response.json())
+        .then((data) => setWorkspace(data.result))
+        .catch((e) => console.log(e));
+
+
+        columnService.getColumnsByBoard(boardId)
+        .then((response) => response.json())
+        .then((data) => setColumns(data.result || []))
+        .catch((e) => console.log(e));
+
+
+    }, []);
+
+    if (!workspaceId || !boardId) return <NotFound text={"Board not found"}/>;
     
     const workspaceData = data.workspaces[workspaceId-1]?.boards[boardId-1];
-    const workspaceList = data.workspaces[workspaceId-1]?.boards[boardId-1]?.lists
-    if (!workspaceList) return <NotFound />;
+    if (!board) return <NotFound text={"Board not found!"}/>;
 
     
     
@@ -51,16 +88,18 @@ function Board() {
 
     }
 
-    const addList = (text) => {
-        const newListId = uuid();
-        const newList = {
-        id: newListId,
-        title:text,
-        cards:[]
+    const addList = async (text) => {
+        let result = await columnService.createColumn(text, boardId);
+        if (result.status === 200) {
+            result = await result.json();
+            setColumns([...columns, result.result]);
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            })
         }
-        const dataCopy = {...data};
-        dataCopy.workspaces[workspaceId-1].boards[boardId-1].lists[newListId] = newList;
-        setData(dataCopy);
 
     }
 
@@ -112,7 +151,7 @@ function Board() {
     }
     
     return (
-        <Base title={`${data.workspaces[workspaceId-1].title} > ${workspaceData.title}`}>
+        <Base title={`${workspace?.title || 'Workspace'} > ${board?.title || 'Board'}`}>
             <ContextAPI.Provider value={{updateColumnTitle, addCard, addList}}>
                 <div>
                     <DragDropContext onDragEnd={ onDragEnd }>
@@ -121,8 +160,8 @@ function Board() {
                                 (provided) => (
                                     <div className={classes.container} ref={provided.innerRef} {...provided.droppableProps}>
                                         {
-                                            Object.keys(workspaceList).map((key, index) => {
-                                                return <KanbanList list={workspaceList[key]} index={index} key={key} />
+                                            columns?.map((index, column) => {
+                                                return <KanbanList list={column} index={index} key={column.id} />
                                             })
                                         }
                                         <div>
