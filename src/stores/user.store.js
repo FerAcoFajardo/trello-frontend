@@ -28,24 +28,23 @@ export default class UserStore{
 
     async createUser(profiePicture, name, firstSurname, secondSurname, birthdate, telephone, email, password){
         console.log("profiePicture: ", profiePicture);
-        
-        const result = await fetch(`${this.URL}/users`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                // img_profile: profiePicture,
-                name: name,
-                first_surname: firstSurname,
-                second_surname: secondSurname,
-                email: email,
-                phone: telephone,
-                password: password,
-                birthdate:birthdate
-            })
-        });
 
-                return result;
+        const formData = new FormData();
+
+        formData.append('img_profile', profiePicture);
+        formData.append('name', name);
+        formData.append('first_surname', firstSurname);
+        formData.append('second_surname', secondSurname);
+        formData.append('email', email);
+        formData.append('phone', telephone);
+        formData.append('password', password);
+        formData.append('birthdate', birthdate);
+
+        formData.set('Content-Type', 'multipart/form-data');
+
+        
+        const result = await fetch(`${this.URL}/users`, formData);
+
+        return result;
     }
 }
