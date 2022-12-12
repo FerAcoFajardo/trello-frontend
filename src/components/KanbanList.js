@@ -11,10 +11,11 @@ const columnService = new CardService();
 const KanbanList = ({column, index}) => {
     const classes = useStyle();
     const [cards, setCards] = useState([]);
+    console.log(column)
 
     useEffect(() => {
 
-        columnService.getCardsByColumn(column._id)
+        columnService.getCardsByColumn(column.id)
         .then((response) => response.json())
         .then((data) => setCards(data.result || []))
         .catch((e) => console.log(e));
@@ -24,29 +25,29 @@ const KanbanList = ({column, index}) => {
     
     
     return (
-        <Draggable draggableId={column._id} key={column._id} index={index}>
+        <Draggable draggableId={column.id} key={column.id} index={index}>
             {
                 (provided) => (
                     <div {...provided.draggableProps} ref={provided.innerRef}>
                         <Paper className={classes.root} {...provided.dragHandleProps}>
                             <CssBaseline />
-                            <ListTitle title={column._title} listId={column._id} key={column._id}/>
+                            <ListTitle title={column.title} columnId={column.id} key={column.id}/>
 
-                            <Droppable droppableId={column._id}>
+                            <Droppable droppableId={column.id}>
                                 {
                                     (providedDrop) => (
                                         <div ref={providedDrop.innerRef} {...providedDrop.droppableProps}>
                                             {
                                                 cards?.map((card, index) => {
                                                     
-                                                    return <KanbanCard card={card} key={card._id} index={index} />
+                                                    return <KanbanCard card={card} key={card.id} index={index} />
                                                 })
                                             }
                                             {providedDrop.placeholder}
                                             {/* de momento */}
                                             <AddCardOrList 
                                                 type="card" 
-                                                columnId={column._id}
+                                                columnId={column.id}
                                                 cards={cards}
                                                 setCards={setCards}
                                             />

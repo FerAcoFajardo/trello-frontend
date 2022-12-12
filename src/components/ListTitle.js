@@ -3,13 +3,14 @@ import { MoreHoriz } from "@material-ui/icons"
 import { useContext, useState } from "react";
 import contextAPI from "../utils/contextAPI";
 
-function ListTitle({title, listId}) {
+function ListTitle({title, columnId}) {
     const classes = useStyle();
     const [open, setOpen] = useState(false);
     const [newTitle, setNewTitle] = useState(title);
     const {updateColumnTitle} = useContext(contextAPI);
     const handleBlur = () => {
-        updateColumnTitle(newTitle, listId);
+        console.log(columnId);
+        updateColumnTitle(newTitle, columnId);
         setOpen(false);
     }
     return (

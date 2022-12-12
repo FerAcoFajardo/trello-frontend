@@ -51,7 +51,13 @@ function Board() {
 
         columnService.getColumnsByBoard(boardId)
         .then((response) => response.json())
-        .then((data) => setColumns(data.result || []))
+        .then((data) => setColumns(
+            data.result?.sort((a, b) => {
+                if (a.position < b.position) return -1;
+                if (a.position > b.position) return 1;
+                return 0;
+
+        }) || []))
         .catch((e) => console.log(e));
 
 
@@ -69,8 +75,9 @@ function Board() {
 
         if(columnResult.status === 200){
             const result = await columnResult.json();
+            console.log('Result: ',result);
             setColumns(columns.map((column) => {
-                if(column._id === columnId){
+                if(column.id === columnId){
                     return result.result;
                 }
                     return column;
