@@ -153,16 +153,18 @@ function Board() {
             newColumnOrder.splice(sourceIndex, 1);
             newColumnOrder.splice(destIndex, 0, columns[sourceIndex]);
             setColumns(newColumnOrder);
+            //columnService.updateColumnOrder(newColumnOrder.map((column) => column.id));
             return;
         }
 
         const start = columns.find((column) => column.id === sourceDroppableId);
         const finish = columns.find((column) => column.id === destDroppableId);
-        console.log('miau',start, finish, columns)
+        
         if (start === finish) {
             const newCardIds = Array.from(start.cards);
             newCardIds.splice(sourceIndex, 1);
-            newCardIds.splice(destIndex, 0, draggableId);
+            const card = start.cards.find((card) => card.id === draggableId);
+            newCardIds.splice(destIndex, 0, card);
             const newColumn = {
                 ...start,
                 cards: newCardIds,
@@ -173,6 +175,7 @@ function Board() {
                 }
                 return column;
             }));
+            cardService.updateCardColumn(card.id, newColumn.id, destIndex +1).then((response) => console.log(response))
             return;
         }
 
@@ -193,7 +196,7 @@ function Board() {
             cards: finishCardIds,
         };
         
-        cardService.updateCardColumn(card.id, finish.id, destIndex).then((response) => console.log(response))
+        cardService.updateCardColumn(card.id, finish.id, destIndex + 1).then((response) => console.log(response))
 
         setColumns(columns.map((column) => {
             if(column.id === newStart.id){
