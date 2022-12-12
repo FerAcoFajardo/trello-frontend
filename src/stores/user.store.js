@@ -39,11 +39,15 @@ export default class UserStore{
         formData.append('phone', telephone);
         formData.append('password', password);
         formData.append('birthdate', birthdate);
-
+        
         formData.set('Content-Type', 'multipart/form-data');
 
+        const options = {
+            method: 'POST',
+            body: formData
+        }
         
-        const result = await fetch(`${this.URL}/users`, formData);
+        const result = await fetch(`${this.URL}/users`, options);
 
         return result;
     }

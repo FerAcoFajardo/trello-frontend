@@ -91,6 +91,13 @@ export default function SignUp() {
           window.location.href = "/signIn";
         });
 
+      } else if (result.status === 409){
+        Swal.fire({
+          title: 'Error!',
+          text: 'The email is already in use',
+          icon: 'error',
+          confirmButtonText: 'Cool'
+        });
       }else{
       // TODO: Change to something more specific
         Swal.fire({
@@ -136,7 +143,7 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" encType='multipart/form-data' noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
 
 
             <Grid container spacing={2}>
