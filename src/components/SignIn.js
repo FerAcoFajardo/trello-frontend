@@ -15,7 +15,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from './Footer';
 import UserService from '../services/user.service.js';
 import Swal from 'sweetalert2';
-import { getToken, setToken } from '../utils/auth.js';
+import { getToken, setToken, setUser } from '../utils/auth.js';
+import jwt from 'jwt-decode';
 
 const userService = new UserService();
 
@@ -35,12 +36,13 @@ export default function SignIn() {
       if (result.status === 200) {
         const data = await result.json();
         const token = data.token;
-        if(!getToken()){
-          setToken(token);
-        }
         
-
-        window.location.href = "/";
+        setToken(token);
+        const user = jwt(token); 
+        const userAsString = JSON.stringify(user);
+        setUser(userAsString);
+        
+        window.location.href = "/workspaces";
   
       }else{
         Swal.fire({
