@@ -13,12 +13,12 @@ function KanbanCard({card, index, cards, serCards, handleDeleteCard}) {
                     <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                         <Paper className={classes.kanbanCard} id={card.id}>
                             {card.title}
-                            <MoreOptions
+                            {/* <MoreOptions
                                 state={cards}
                                 setState={serCards}
                                 handleDelete={handleDeleteCard}
                                 id={card.id}
-                            />
+                            /> */}
                         </Paper>
                     </div>
                 )

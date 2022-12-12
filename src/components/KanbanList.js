@@ -7,7 +7,7 @@ import ListTitle from './ListTitle';
 import CardService from '../services/card.service.js';
 import contextAPI from "../utils/contextAPI";
 
-const columnService = new CardService();
+const cardsService = new CardService();
 
 const KanbanList = ({column, index}) => {
     const classes = useStyle();
@@ -17,7 +17,7 @@ const KanbanList = ({column, index}) => {
 
     useEffect(() => {
 
-        columnService.getCardsByColumn(column.id)
+        cardsService.getCardsByColumn(column.id)
         .then((response) => response.json())
         .then((data) => setCards(data.result || []))
         .catch((e) => console.log(e));
@@ -26,7 +26,7 @@ const KanbanList = ({column, index}) => {
     
     
     const handleDeleteCard = (cardId) => {
-        setCards(cards.filter(card => card.id !== cardId));
+        // setCards(cards.filter(card => card.id !== cardId));
     }
     return (
         <Draggable draggableId={column.id} key={column.id} index={index}>

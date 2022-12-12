@@ -114,7 +114,6 @@ function Board() {
             const result = await response.json();
             setColumns([...columns, result.result]);
         }else{
-            setColumns((prevstate) => ([...prevstate]));
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
