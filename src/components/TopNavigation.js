@@ -6,7 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-
+import AvatarImg from './AvatarImg.js';
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -62,6 +62,9 @@ function TopNavigation(props) {
             <NotificationsIcon />
           </Badge>
         </IconButton> */}
+        <AvatarImg 
+          user={props.user}
+        />
       </Toolbar>
     </AppBar>
   );

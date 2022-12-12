@@ -4,8 +4,6 @@ import { BrowserRouter, Router, Routes, Route } from "react-router-dom";
 import Workspace from './components/pages/Workspace';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
-import {StrictMode} from 'react';
-import {initApp} from './utils/auth.js';
 import {getUser, getToken} from './utils/auth.js';
 import {ProtectedRoute} from './components/ProtectedRoute.js';
 

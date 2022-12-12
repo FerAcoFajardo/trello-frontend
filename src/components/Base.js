@@ -7,6 +7,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Footer from './Footer.js';
 import SideBar from './SideBar.js';
+import {getUser, getToken} from '../utils/auth.js';
 
 
 import TopNavigation from './TopNavigation.js';
@@ -17,6 +18,7 @@ const mdTheme = createTheme();
 function DashboardContent({ children, title }) {
 
   const [open, setOpen] = useState(true);
+  const user = getUser();
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -26,7 +28,7 @@ function DashboardContent({ children, title }) {
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         
-        <TopNavigation open={open} toggleDrawer={toggleDrawer} title={title} />
+        <TopNavigation open={open} toggleDrawer={toggleDrawer} title={title} user={user}/>
         <SideBar open={open} toggleDrawer={toggleDrawer} />
         
         <Box

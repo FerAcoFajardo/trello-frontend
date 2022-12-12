@@ -25,7 +25,9 @@ const KanbanList = ({column, index}) => {
     }, [])
     
     
-    
+    const handleDeleteCard = (cardId) => {
+        setCards(cards.filter(card => card.id !== cardId));
+    }
     return (
         <Draggable draggableId={column.id} key={column.id} index={index}>
             {
@@ -48,7 +50,14 @@ const KanbanList = ({column, index}) => {
                                             {
                                                 cards?.map((card, index) => {
                                                     
-                                                    return <KanbanCard card={card} key={card.id} index={index} />
+                                                    return <KanbanCard 
+                                                        card={card} 
+                                                        key={card.id} 
+                                                        index={index}
+                                                        cards={cards}
+                                                        setCards={setCards} 
+                                                        handleDeleteCard={handleDeleteCard}
+                                                    />
                                                 })
                                             }
                                             {providedDrop.placeholder}
