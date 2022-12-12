@@ -4,14 +4,15 @@ import { useContext, useState } from 'react'
 import { Clear, MoreHoriz} from '@material-ui/icons'
 import contextAPI from '../utils/contextAPI.js';
 
-function AddCardOrListText({type, setOpen, columnId, cards, setCards}) {
+function AddCardOrListText({type, setOpen, columnId}) {
     const [text, setText] = useState('');
     const classes = useStyle();
-    const {createCard , createColumn} = useContext(contextAPI);
+    const {columns, setColumns, createCard , createColumn} = useContext(contextAPI);
+    const cards = columns?.find(col => col.id === columnId)?.cards;
 
     const handleAddCardOrList = () => {
         if(type === "card"){
-            createCard(text, columnId, cards, setCards);
+            createCard(text, columnId);
         }else{
             createColumn(text);
         }

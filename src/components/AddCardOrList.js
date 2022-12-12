@@ -1,10 +1,14 @@
 import {Collapse, alpha, makeStyles, Paper, Typography} from '@material-ui/core'
-import { useState } from "react"
+import { useContext, useState } from "react"
+import contextAPI from '../utils/contextAPI';
 import AddCardOrListText from './AddCardOrListText';
 
-function AddCardOrList({type, columnId, cards, setCards}) {
+function AddCardOrList({type, columnId}) {
     const classes = useStyle();
     const [open, setOpen] = useState(false);
+    const {columns, setColumns } = useContext(contextAPI);
+    const cards = columns?.find(col => col.id === columnId)?.cards;
+
   return (
     <div className={classes.root}>
         <Collapse in={open}>
@@ -12,8 +16,6 @@ function AddCardOrList({type, columnId, cards, setCards}) {
             type={type} 
             setOpen={setOpen} 
             columnId={columnId}
-            cards={cards}
-            setCards={setCards}
         />
         </Collapse>
 

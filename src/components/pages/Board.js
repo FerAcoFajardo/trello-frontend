@@ -53,8 +53,7 @@ function Board() {
         .then((response) => response.json())
         .then((data) => setColumns(data.result) || [])
         .catch((e) => console.log(e));
-
-
+        
     }, []);
 
     if (!workspaceId || !boardId) return <NotFound text={"Board not found"}/>;
@@ -92,12 +91,24 @@ function Board() {
     
     }
 
-    const createCard = async (text, columnId, state, setState) => {
+    const setCardsContext = (columnId, cards) => {
+        const column = columns.find((column) => column.id === columnId);
+        column.cards = cards;
+        setColumns(columns.map((column) => column));
+    }
+
+    const createCard = async (text, columnId) => {
         const response = await cardService.createCard(text, columnId);
         // console.log(response);
         if (response.status === 200) {
             const result = await response.json();
-            setState([...state, result.result]);
+            const columnsUpdated = columns.map((column) => {
+                if(column.id === columnId){
+                    column.cards.push(result.result);
+                }
+                return column;
+            });
+            setColumns(columnsUpdated);
         }else{
             Swal.fire({
                 icon: 'error',
@@ -130,48 +141,76 @@ function Board() {
         const sourceDroppableId = source?.droppableId;
         const sourceIndex = source?.index;
 
-        // console.table([{sourceDroppableId, destDroppableId, draggableId}]);
-        // console.table([{type, sourceIndex, destIndex}]);
+        console.table([{sourceDroppableId, destDroppableId, draggableId}]);
+        console.table([{type, sourceIndex, destIndex}]);
         if (!destination) return;
         if (sourceDroppableId === destDroppableId && sourceIndex === destIndex) return;
         
-        if (type === 'list') {
-            const list = workspaceData.lists[draggableId];
-            // console.log(list, draggableId);
-            // console.log(workspaceData.lists);
-            const lists = Object.values(workspaceData.lists);
-            lists.splice(sourceIndex, 1);
-            lists.splice(destIndex, 0, list);
-            const newData = {...data};
-            // lists to object
-            const listsObj = {};
-            lists.forEach(list => {
-                listsObj[list.id] = list;
-            })
-            newData.workspaces[workspaceId-1].boards[boardId-1].lists = listsObj;
-            setData(newData);
-            // console.log(newData);
+        console.log(columns)
+
+        if (type === "list") {
+            const newColumnOrder = Array.from(columns);
+            newColumnOrder.splice(sourceIndex, 1);
+            newColumnOrder.splice(destIndex, 0, columns[sourceIndex]);
+            setColumns(newColumnOrder);
             return;
         }
 
-        const sourceList = workspaceData.lists[sourceDroppableId];
-        // console.log(sourceList);
-        const destList = workspaceData.lists[destDroppableId];
-        const sourceCards = [...sourceList.cards];
-        const destCards = destList === sourceList ? sourceCards : [...destList.cards];
-        const [removed] = sourceCards.splice(sourceIndex, 1);
-        destCards.splice(destIndex, 0, removed);
-        sourceList.cards = sourceCards;
-        destList.cards = destCards;
-        const newData = {...data};
-        newData.workspaces[workspaceId-1].boards[boardId-1].lists[sourceDroppableId] = sourceList;
-        newData.workspaces[workspaceId-1].boards[boardId-1].lists[destDroppableId] = destList;
-        setData(newData);
+        const start = columns.find((column) => column.id === sourceDroppableId);
+        const finish = columns.find((column) => column.id === destDroppableId);
+        console.log('miau',start, finish, columns)
+        if (start === finish) {
+            const newCardIds = Array.from(start.cards);
+            newCardIds.splice(sourceIndex, 1);
+            newCardIds.splice(destIndex, 0, draggableId);
+            const newColumn = {
+                ...start,
+                cards: newCardIds,
+            };
+            setColumns(columns.map((column) => {
+                if(column.id === newColumn.id){
+                    return newColumn;
+                }
+                return column;
+            }));
+            return;
+        }
+
+        const startCardIds = Array.from(start.cards);
+        startCardIds.splice(sourceIndex, 1);
+        const newStart = {
+            ...start,
+            cards: startCardIds,
+        };
+        console.log('startCardIds', 'newStart')
+        console.log(startCardIds, newStart)
+
+        const finishCardIds = Array.from(finish.cards);
+        const card = start.cards.find((card) => card.id === draggableId);
+        finishCardIds.splice(destIndex, 0, card);
+        const newFinish = {
+            ...finish,
+            cards: finishCardIds,
+        };
+        
+        cardService.updateCardColumn(card.id, finish.id, destIndex).then((response) => console.log(response))
+
+        setColumns(columns.map((column) => {
+            if(column.id === newStart.id){
+                return newStart;
+            }
+            if(column.id === newFinish.id){
+                return newFinish;
+            }
+            return column;
+        }));
+
+        
     }
     
     return (
         <Base title={`${workspace?.title || 'Workspace'} > ${board?.title || 'Board'}`}>
-            <ContextAPI.Provider value={{updateColumnTitle, createCard, createColumn, columns, setColumns}}>
+            <ContextAPI.Provider value={{updateColumnTitle, createCard, createColumn, setCardsContext, columns, setColumns}}>
                 <div>
                     <DragDropContext onDragEnd={ onDragEnd }>
                         <Droppable droppableId="all-lists" direction="horizontal" type="list">

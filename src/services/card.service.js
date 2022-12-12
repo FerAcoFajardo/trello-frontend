@@ -38,11 +38,12 @@ export default class CardService {
         }
     }
 
-    async updateCardColumn(id, columnId){
+    async updateCardColumn(id, columnId, position){
         try{
-            const data = await this.store.updateCardColumn(id, columnId, this.token);
+            const data = await this.store.updateCardColumn(id, columnId, position, this.token);
             return data;
         }catch (e) {
+            console.log(e)
             throw new ServiceError("Error in updating card column");
         }
     }

@@ -11,19 +11,9 @@ const cardsService = new CardService();
 
 const KanbanList = ({column, index}) => {
     const classes = useStyle();
-    const [cards, setCards] = useState([]);
     
-    const {columns, setColumns} = useContext(contextAPI);
-
-    useEffect(() => {
-
-        cardsService.getCardsByColumn(column.id)
-        .then((response) => response.json())
-        .then((data) => setCards(data.result || []))
-        .catch((e) => console.log(e));
-    
-    }, [])
-    
+    const {columns, setColumns } = useContext(contextAPI);
+    const cards = columns.find(col => col.id === column.id)?.cards;
     
     const handleDeleteCard = (cardId) => {
         // setCards(cards.filter(card => card.id !== cardId));
@@ -54,8 +44,6 @@ const KanbanList = ({column, index}) => {
                                                         card={card} 
                                                         key={card.id} 
                                                         index={index}
-                                                        cards={cards}
-                                                        setCards={setCards} 
                                                         handleDeleteCard={handleDeleteCard}
                                                     />
                                                 })
@@ -65,8 +53,6 @@ const KanbanList = ({column, index}) => {
                                             <AddCardOrList 
                                                 type="card" 
                                                 columnId={column.id}
-                                                cards={cards}
-                                                setCards={setCards}
                                             />
                                         </div>
                                     )

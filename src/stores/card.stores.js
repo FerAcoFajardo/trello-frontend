@@ -66,7 +66,7 @@ export default class WorkspaceStore{
 
     }
 
-    async updateCardColun(id, columnId, token){
+    async updateCardColumn(id, columnId, position, token){
                     
         const request = {
             method: 'PATCH',
@@ -76,6 +76,7 @@ export default class WorkspaceStore{
             },
             body: JSON.stringify({
                 column: columnId,
+                position: position,
             })
         }
 
