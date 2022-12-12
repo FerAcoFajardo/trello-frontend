@@ -1,17 +1,19 @@
 import {Paper, CssBaseline, makeStyles} from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import AddCardOrList from './AddCardOrList';
 import KanbanCard from './KanbanCard';
 import ListTitle from './ListTitle';
 import CardService from '../services/card.service.js';
+import contextAPI from "../utils/contextAPI";
 
 const columnService = new CardService();
 
 const KanbanList = ({column, index}) => {
     const classes = useStyle();
     const [cards, setCards] = useState([]);
-    console.log(column)
+    
+    const {columns, setColumns} = useContext(contextAPI);
 
     useEffect(() => {
 
@@ -31,7 +33,13 @@ const KanbanList = ({column, index}) => {
                     <div {...provided.draggableProps} ref={provided.innerRef}>
                         <Paper className={classes.root} {...provided.dragHandleProps}>
                             <CssBaseline />
-                            <ListTitle title={column.title} columnId={column.id} key={column.id}/>
+                            <ListTitle 
+                                state={columns}
+                                setState={setColumns}
+                                title={column.title} 
+                                columnId={column.id} 
+                                key={column.id}
+                            />
 
                             <Droppable droppableId={column.id}>
                                 {

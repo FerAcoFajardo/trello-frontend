@@ -73,4 +73,17 @@ export default class WorkspaceStore{
         return result;
     }
 
+    async deleteColumn(id, token){
+        const request = {
+            method: 'DELETE',
+            headers: {
+                'Authorization': token,
+                'Content-Type': 'application/json'
+            }
+        }
+        const result = await fetch(`${this.URL}/columns/${id}`, request);
+
+        return result;
+    }
+
 }

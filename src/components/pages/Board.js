@@ -51,13 +51,7 @@ function Board() {
 
         columnService.getColumnsByBoard(boardId)
         .then((response) => response.json())
-        .then((data) => setColumns(
-            data.result?.sort((a, b) => {
-                if (a.position < b.position) return -1;
-                if (a.position > b.position) return 1;
-                return 0;
-
-        }) || []))
+        .then((data) => setColumns(data.result) || [])
         .catch((e) => console.log(e));
 
 
@@ -75,7 +69,6 @@ function Board() {
 
         if(columnResult.status === 200){
             const result = await columnResult.json();
-            console.log('Result: ',result);
             setColumns(columns.map((column) => {
                 if(column.id === columnId){
                     return result.result;
@@ -179,7 +172,7 @@ function Board() {
     
     return (
         <Base title={`${workspace?.title || 'Workspace'} > ${board?.title || 'Board'}`}>
-            <ContextAPI.Provider value={{updateColumnTitle, createCard, createColumn}}>
+            <ContextAPI.Provider value={{updateColumnTitle, createCard, createColumn, columns, setColumns}}>
                 <div>
                     <DragDropContext onDragEnd={ onDragEnd }>
                         <Droppable droppableId="all-lists" direction="horizontal" type="list">
@@ -209,9 +202,9 @@ function Board() {
 }
 
 const useStyle = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-  }
-}))
+    container: {
+        display: 'flex',
+    }
+}));
 
 export default Board;

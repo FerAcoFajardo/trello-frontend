@@ -47,4 +47,13 @@ export default class ColumnService {
         }
     }
 
+    async deleteColumn(id) {
+        try{
+            const data = await this.store.deleteColumn(id, this.token);
+            return data;
+        }catch (e) {
+            throw new ServiceError("Error deleting column");
+        }
+    }
+
 }

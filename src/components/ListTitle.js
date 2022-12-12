@@ -1,18 +1,49 @@
 import {InputBase, makeStyles, Typography} from "@material-ui/core"
-import { MoreHoriz } from "@material-ui/icons"
 import { useContext, useState } from "react";
+import ColumnService from '../services/column.service.js';
+
+import MoreOptions from "./MoreOptions";
+
 import contextAPI from "../utils/contextAPI";
+import Swal from "sweetalert2";
+const columnService = new ColumnService();
 
 function ListTitle({title, columnId}) {
     const classes = useStyle();
     const [open, setOpen] = useState(false);
     const [newTitle, setNewTitle] = useState(title);
-    const {updateColumnTitle} = useContext(contextAPI);
+    const {updateColumnTitle, columns, setColumns} = useContext(contextAPI);
     const handleBlur = () => {
-        console.log(columnId);
         updateColumnTitle(newTitle, columnId);
         setOpen(false);
     }
+
+    const handleDeleteColumn = async (id) => {
+        let success = false;
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        })
+        if(result.isConfirmed){
+            const response = await columnService.deleteColumn(id);
+            if (response.status === 200) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+                success = true;
+            }
+        }
+        return success;
+    }
+
+
     return (
 
 
@@ -32,7 +63,12 @@ function ListTitle({title, columnId}) {
                     <Typography className={classes.titleText} onClick={() =>setOpen(true)}>
                         {newTitle}
                     </Typography>
-                    <MoreHoriz />
+                    <MoreOptions
+                        state={columns}
+                        setState={setColumns}
+                        handleDelete={handleDeleteColumn}
+                        id={columnId}
+                    />
                 </div>
             )}
         </>
