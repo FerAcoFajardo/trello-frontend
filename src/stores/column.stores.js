@@ -26,6 +26,20 @@ export default class WorkspaceStore{
         return result;
     }
 
+    async getColumn(id, token){
+        const request = {
+            method: 'GET',
+            headers: {
+                'Authorization': token,
+                'Content-Type': 'application/json'
+            }
+        }
+
+        const result = await fetch(`${this.URL}/columns/${id}`, request);
+
+        return result;
+    }
+
 
     async getColumnsByBoard(id, token){
             
@@ -42,15 +56,16 @@ export default class WorkspaceStore{
         return result;
     }
 
-    async updateColumTitle(id, title, token){
+    async updateColumnTitle(id, title, boardId, token){
         const request = {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Authorization': token,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                title: title
+                title: title,
+                board: boardId,
             })
         }
         const result = await fetch(`${this.URL}/columns/${id}`, request);

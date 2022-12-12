@@ -20,6 +20,15 @@ export default class ColumnService {
         }
     }
 
+    async getColumn(id) {
+        try{
+            const data = await this.store.getColumn(id, this.token);
+            return data;
+        }catch (e) {
+            throw new ServiceError("Error getting column");
+        }
+    }
+
     async getColumnsByBoard(id) {
         try{
             const data = await this.store.getColumnsByBoard(id, this.token);
@@ -29,9 +38,9 @@ export default class ColumnService {
         }
     }
 
-    async updateColumTitle(id, title) {
+    async updateColumnTitle(id, title, boardId) {
         try{
-            const data = await this.store.updateColumTitle(id, title, this.token);
+            const data = await this.store.updateColumnTitle(id, title, boardId, this.token);
             return data;
         }catch (e) {
             throw new ServiceError("Error updating column title");

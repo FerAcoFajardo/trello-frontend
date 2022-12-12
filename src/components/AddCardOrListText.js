@@ -7,13 +7,13 @@ import contextAPI from '../utils/contextAPI.js';
 function AddCardOrListText({type, setOpen, columnId, cards, setCards}) {
     const [text, setText] = useState('');
     const classes = useStyle();
-    const {addCard, addList} = useContext(contextAPI);
+    const {createCard , createColumn} = useContext(contextAPI);
 
     const handleAddCardOrList = () => {
         if(type === "card"){
-            addCard(text, columnId, cards, setCards);
+            createCard(text, columnId, cards, setCards);
         }else{
-            addList(text);
+            createColumn(text);
         }
         setText("");
         setOpen(false);
@@ -62,9 +62,6 @@ const useStyle = makeStyles(theme => ({
         margin: theme.spacing(1),
         fontSize: '1.2rem',
         fontWeight: 'bold',
-        '&:focus': {
-            background: '#ddd',
-        }
     },
     confirm: {
         display: 'flex',

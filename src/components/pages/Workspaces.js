@@ -2,12 +2,8 @@ import Base from '../Base';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { useState, useEffect } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 import WorkspaceCard from '../WorkspaceOrBoardCard';
 import WorkspaceService from '../../services/workspace.service.js';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import Swal from 'sweetalert2';
 import AddWorkspaceOrBoard from '../AddWorkspaceOrBoard';
 

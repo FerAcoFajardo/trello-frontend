@@ -1,6 +1,6 @@
 import UserStore from "../stores/user.store.js";
 import ServiceError from "../errors/errors.js"
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 
 import { getToken, removeToken } from "../utils/auth.js";
 export default class UserService {

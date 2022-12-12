@@ -2,7 +2,6 @@ import { makeStyles } from '@material-ui/core';
 import KanbanList from '../KanbanList';
 import AddCardOrList from '../AddCardOrList';
 import {useEffect, useState} from 'react';
-import uuid from "react-uuid";
 import mockData from '../../mockdata.js';
 import ContextAPI from '../../utils/contextAPI.js';
 import Base from '../Base';
@@ -65,16 +64,35 @@ function Board() {
 
     
     
-    const updateColumnTitle = (newTitle, columnId) => {
-        const list = workspaceData.lists[columnId];
-        list.title = newTitle;
-        const newData = {...data};
-        newData.workspaces[workspaceId-1].boards[boardId-1].lists[columnId] = list;
-        setData(newData);
+    const updateColumnTitle = async (newTitle, columnId) => {
+        const columnResult = await columnService.updateColumnTitle(columnId, newTitle, boardId);
+
+        if(columnResult.status === 200){
+            const result = await columnResult.json();
+            setColumns(columns.map((column) => {
+                if(column._id === columnId){
+                    return result.result;
+                }
+                    return column;
+                }));
+        }else if(columnResult.status === 400 || columnResult.status === 500){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            })
+        }else if(columnResult.status === 404){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Column was not find!',
+            })
+        }
+            
     
     }
 
-    const addCard = async (text, columnId, state, setState) => {
+    const createCard = async (text, columnId, state, setState) => {
         const response = await cardService.createCard(text, columnId);
         // console.log(response);
         if (response.status === 200) {
@@ -90,7 +108,7 @@ function Board() {
 
     }
 
-    const addList = async (text) => {
+    const createColumn = async (text) => {
         const response = await columnService.createColumn(text, boardId);
         if (response.status === 200) {
             const result = await response.json();
@@ -154,7 +172,7 @@ function Board() {
     
     return (
         <Base title={`${workspace?.title || 'Workspace'} > ${board?.title || 'Board'}`}>
-            <ContextAPI.Provider value={{updateColumnTitle, addCard, addList}}>
+            <ContextAPI.Provider value={{updateColumnTitle, createCard, createColumn}}>
                 <div>
                     <DragDropContext onDragEnd={ onDragEnd }>
                         <Droppable droppableId="all-lists" direction="horizontal" type="list">
