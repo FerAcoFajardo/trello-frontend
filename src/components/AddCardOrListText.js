@@ -26,7 +26,6 @@ function AddCardOrListText({type, setOpen, columnId, cards, setCards}) {
                     multiline
                     value={text} 
                     onChange={e => setText(e.target.value) } 
-                    onBlur={() => { setOpen(false) }}
                     placeholder={type === 'card' ? 'Enter a title for this card...' : 'Enter list title...'}
                     inputProps={{className: classes.input}}
                 />
