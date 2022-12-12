@@ -3,6 +3,7 @@ import { InputBase } from '@mui/material'
 import { useContext, useState } from 'react'
 import { Clear, MoreHoriz} from '@material-ui/icons'
 import contextAPI from '../utils/contextAPI.js';
+import Swal from 'sweetalert2';
 
 function AddCardOrListText({type, setOpen, columnId}) {
     const [text, setText] = useState('');
@@ -12,9 +13,25 @@ function AddCardOrListText({type, setOpen, columnId}) {
 
     const handleAddCardOrList = () => {
         if(type === "card"){
-            createCard(text, columnId);
+            if(text !== ""){
+                createCard(text, columnId);
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter a title for this card!',
+                })
+            };
         }else{
-            createColumn(text);
+            if(text !== ""){
+                createColumn(text);
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter a title for this list!',
+                })
+            }
         }
         setText("");
         setOpen(false);
