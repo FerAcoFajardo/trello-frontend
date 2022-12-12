@@ -123,7 +123,13 @@ function Board() {
         const response = await columnService.createColumn(text, boardId);
         if (response.status === 200) {
             const result = await response.json();
-            setColumns([...columns, result.result]);
+            result.result.cards = [];
+            if (columns){
+                setColumns([...columns, result.result]);
+            } else {
+                setColumns([result.result]);
+            }
+            
         }else{
             Swal.fire({
                 icon: 'error',
@@ -153,7 +159,8 @@ function Board() {
             newColumnOrder.splice(sourceIndex, 1);
             newColumnOrder.splice(destIndex, 0, columns[sourceIndex]);
             setColumns(newColumnOrder);
-            //columnService.updateColumnOrder(newColumnOrder.map((column) => column.id));
+            console.log(columns[sourceIndex].id, destIndex)
+            columnService.updateColumnPosition(columns[sourceIndex].id, destIndex)
             return;
         }
 

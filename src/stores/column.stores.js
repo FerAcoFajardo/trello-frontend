@@ -86,4 +86,20 @@ export default class WorkspaceStore{
         return result;
     }
 
+    async updateColumnPosition(id, position, token){
+        const request = {
+            method: 'PATCH',
+            headers: {
+                'Authorization': token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                position: position,
+            })
+        }
+        const result = await fetch(`${this.URL}/columns/${id}`, request);
+
+        return result;
+    }
+
 }

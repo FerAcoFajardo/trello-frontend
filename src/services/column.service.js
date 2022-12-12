@@ -56,4 +56,12 @@ export default class ColumnService {
         }
     }
 
+    async updateColumnPosition(id, position) {
+        try{
+            const data = await this.store.updateColumnPosition(id, position, this.token);
+            return data;
+        }catch (e) {
+            throw new ServiceError("Error updating column position");
+        }
+    }
 }
