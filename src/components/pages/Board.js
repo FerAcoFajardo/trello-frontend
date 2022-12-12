@@ -58,7 +58,7 @@ function Board() {
 
     if (!workspaceId || !boardId) return <NotFound text={"Board not found"}/>;
     
-    const workspaceData = data.workspaces[workspaceId-1]?.boards[boardId-1];
+    
     if (!board) return <NotFound text={"Board not found!"}/>;
 
     
@@ -160,7 +160,7 @@ function Board() {
             newColumnOrder.splice(destIndex, 0, columns[sourceIndex]);
             setColumns(newColumnOrder);
             console.log(columns[sourceIndex].id, destIndex)
-            columnService.updateColumnPosition(columns[sourceIndex].id, destIndex)
+            columnService.updateColumnPosition(columns[sourceIndex].id, destIndex + 1)
             return;
         }
 
