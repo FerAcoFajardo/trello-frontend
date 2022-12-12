@@ -12,12 +12,14 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import WorkspaceService from '../../services/workspace.service.js';
 import BoardService from '../../services/board.service.js';
 import ColumnService from '../../services/column.service.js';
+import CardService from '../../services/card.service.js';
 import Swal from 'sweetalert2';
 
 
 const boardService = new BoardService();
 const workspaceService = new WorkspaceService();
 const columnService = new ColumnService();
+const cardService = new CardService();
 
 function Board() {
     const classes = useStyle();
@@ -63,37 +65,38 @@ function Board() {
 
     
     
-    const updateColumnTitle = (newTitle, listId) => {
-        const list = workspaceData.lists[listId];
+    const updateColumnTitle = (newTitle, columnId) => {
+        const list = workspaceData.lists[columnId];
         list.title = newTitle;
         const newData = {...data};
-        newData.workspaces[workspaceId-1].boards[boardId-1].lists[listId] = list;
+        newData.workspaces[workspaceId-1].boards[boardId-1].lists[columnId] = list;
         setData(newData);
     
     }
 
-    const addCard = (text, listId) => {
-        const newCardId = uuid();
-        const newCard = {
-            id: newCardId,
-            title:text
+    const addCard = async (text, columnId, state, setState) => {
+        const response = await cardService.createCard(text, columnId);
+        // console.log(response);
+        if (response.status === 200) {
+            const result = await response.json();
+            setState([...state, result.result]);
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            })
         }
-
-        const list = workspaceData.lists[listId];
-        const cards = [...list.cards, newCard];
-        list.cards = cards
-        const dataCopy = {...data};
-        dataCopy.workspaces[workspaceId-1].boards[boardId-1].lists[listId] = list;
-        setData(dataCopy);
 
     }
 
     const addList = async (text) => {
-        let result = await columnService.createColumn(text, boardId);
-        if (result.status === 200) {
-            result = await result.json();
+        const response = await columnService.createColumn(text, boardId);
+        if (response.status === 200) {
+            const result = await response.json();
             setColumns([...columns, result.result]);
         }else{
+            setColumns((prevstate) => ([...prevstate]));
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -110,16 +113,15 @@ function Board() {
         const sourceDroppableId = source?.droppableId;
         const sourceIndex = source?.index;
 
-        console.table([{sourceDroppableId, destDroppableId, draggableId}]);
-        console.table([{type, sourceIndex, destIndex}]);
+        // console.table([{sourceDroppableId, destDroppableId, draggableId}]);
+        // console.table([{type, sourceIndex, destIndex}]);
         if (!destination) return;
         if (sourceDroppableId === destDroppableId && sourceIndex === destIndex) return;
         
         if (type === 'list') {
             const list = workspaceData.lists[draggableId];
-            console.log(result)
-            console.log(list, draggableId);
-            console.log(workspaceData.lists);
+            // console.log(list, draggableId);
+            // console.log(workspaceData.lists);
             const lists = Object.values(workspaceData.lists);
             lists.splice(sourceIndex, 1);
             lists.splice(destIndex, 0, list);
@@ -131,12 +133,12 @@ function Board() {
             })
             newData.workspaces[workspaceId-1].boards[boardId-1].lists = listsObj;
             setData(newData);
-            console.log(newData);
+            // console.log(newData);
             return;
         }
 
         const sourceList = workspaceData.lists[sourceDroppableId];
-        console.log(sourceList);
+        // console.log(sourceList);
         const destList = workspaceData.lists[destDroppableId];
         const sourceCards = [...sourceList.cards];
         const destCards = destList === sourceList ? sourceCards : [...destList.cards];
@@ -160,8 +162,10 @@ function Board() {
                                 (provided) => (
                                     <div className={classes.container} ref={provided.innerRef} {...provided.droppableProps}>
                                         {
-                                            columns?.map((index, column) => {
-                                                return <KanbanList list={column} index={index} key={column.id} />
+                                            columns?.map((column, index) => {
+                                                // console.log(column);
+                                                // console.log(index);
+                                                return <KanbanList column={column} index={index} key={column.id} />
                                             })
                                         }
                                         <div>

@@ -4,19 +4,21 @@ import { useContext, useState } from 'react'
 import { Clear, MoreHoriz} from '@material-ui/icons'
 import contextAPI from '../utils/contextAPI.js';
 
-function AddCardOrListText({type, setOpen, listId}) {
+function AddCardOrListText({type, setOpen, columnId, cards, setCards}) {
     const [text, setText] = useState('');
     const classes = useStyle();
     const {addCard, addList} = useContext(contextAPI);
+
     const handleAddCardOrList = () => {
         if(type === "card"){
-            addCard(text, listId);
+            addCard(text, columnId, cards, setCards);
         }else{
             addList(text);
         }
         setText("");
         setOpen(false);
-    }            
+    }
+
     return (
         <>
             <Paper className={classes.card}>

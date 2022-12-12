@@ -1,35 +1,56 @@
 import {Paper, CssBaseline, makeStyles} from '@material-ui/core';
+import { useEffect, useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 // import { LocalConvenienceStoreOutlined } from '@material-ui/icons';
 import AddCardOrList from './AddCardOrList';
 import KanbanCard from './KanbanCard';
 import ListTitle from './ListTitle';
+import CardService from '../services/card.service.js';
 
-const KanbanList = ({list, index}) => {
+const columnService = new CardService();
+
+const KanbanList = ({column, index}) => {
     const classes = useStyle();
-    const {id, title, cards} = list;
+    const [cards, setCards] = useState([]);
+
+    useEffect(() => {
+
+        columnService.getCardsByColumn(column._id)
+        .then((response) => response.json())
+        .then((data) => setCards(data.result || []))
+        .catch((e) => console.log(e));
+    
+    }, [])
+    
+    
     
     return (
-        <Draggable draggableId={id} key={id} index={index}>
+        <Draggable draggableId={column._id} key={column._id} index={index}>
             {
                 (provided) => (
                     <div {...provided.draggableProps} ref={provided.innerRef}>
                         <Paper className={classes.root} {...provided.dragHandleProps}>
                             <CssBaseline />
-                            <ListTitle title={title} listId={id} key={id}/>
+                            <ListTitle title={column._title} listId={column._id} key={column._id}/>
 
-                            <Droppable droppableId={id}>
+                            <Droppable droppableId={column._id}>
                                 {
                                     (providedDrop) => (
                                         <div ref={providedDrop.innerRef} {...providedDrop.droppableProps}>
                                             {
-                                                cards.map((card, index) => {
-                                                    return <KanbanCard card={card} key={card.id} index={index} />
+                                                cards?.map((card, index) => {
+                                                    
+                                                    return <KanbanCard card={card} key={card._id} index={index} />
                                                 })
                                             }
                                             {providedDrop.placeholder}
                                             {/* de momento */}
-                                            <AddCardOrList type="card" listId={list.id}/>
+                                            <AddCardOrList 
+                                                type="card" 
+                                                columnId={column._id}
+                                                cards={cards}
+                                                setCards={setCards}
+                                            />
                                         </div>
                                     )
                                 }

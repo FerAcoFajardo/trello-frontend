@@ -30,6 +30,20 @@ export default class WorkspaceStore{
 
     }
 
+    async getCardsByColumn(columnId, token){
+        const request = {
+            method: 'GET',
+            headers: {
+                'Authorization': token,
+                'Content-Type': 'application/json'
+            }
+        }
+
+        const result = await fetch(`${this.URL}/columns/${columnId}/cards`, request);
+
+        return result;
+    }
+
     async updateCard(id, title, description, columnId, deadlineDate, token){
                 
         const request = {

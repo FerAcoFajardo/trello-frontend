@@ -20,6 +20,15 @@ export default class CardService {
         }
     }
 
+    async getCardsByColumn(columnId) {
+        try{
+            const data = await this.store.getCardsByColumn(columnId, this.token);
+            return data;
+        }catch (e) {
+            throw new ServiceError("Error getting cards by column");
+        }
+    }
+
     async updateCard(id, title, description, columnId, deadlineDate,){
         try{
             const data = await this.store.updateCard(id, title, description, columnId, deadlineDate, this.token);

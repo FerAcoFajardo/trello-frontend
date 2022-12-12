@@ -86,7 +86,6 @@ function WorkspaceCard(props) {
         </CardContent>
         <CardActions  style={{justifyContent: 'center'}}>
           <Button size="small" href={url}>View</Button>
-          <Button size="small">Edit</Button>
           <Button size="small" onClick={handleDeleteCardBoard}>Remove</Button>
         </CardActions>
     </Card>

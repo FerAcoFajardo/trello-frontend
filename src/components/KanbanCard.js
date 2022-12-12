@@ -4,14 +4,13 @@ import {Draggable} from 'react-beautiful-dnd';
 
 function KanbanCard({card, index}) {
     const classes = useStyle();
-    const {id, title} = card;
     return (
-        <Draggable draggableId={id} index={index} key={id}>
+        <Draggable draggableId={card._id} index={index} key={card._id}>
             {
                 (provided) => (
                     <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                        <Paper className={classes.kanbanCard} id={id}>
-                            {title}
+                        <Paper className={classes.kanbanCard} id={card._id}>
+                            {card._title}
                         </Paper>
                     </div>
                 )

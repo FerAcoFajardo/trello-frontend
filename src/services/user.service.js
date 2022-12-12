@@ -22,14 +22,14 @@ export default class UserService {
         try{
             if(getToken()){
                 removeToken();
-                window.location.href = "/SignIn";
-            }else{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'You are not logged in!',
-                })
+            // }else{
+            //     Swal.fire({
+            //         icon: 'error',
+            //         title: 'Oops...',
+            //         text: 'You are not logged in!',
+            //     })
             }
+            window.location.href = "/SignIn";
         }catch (e) {
             throw new ServiceError("Error in logout");
         }
